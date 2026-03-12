@@ -34,6 +34,7 @@ model User {
   orders        Order[]
   reviews       Review[]
   linkedAccounts LinkedAccount[] // OAuth linked accounts
+  courierApprovalAudits CourierApprovalAudit[]
 
   @@map("users")
 }
@@ -73,11 +74,11 @@ model Role {
   name        String   @unique // e.g., 'merchant_admin'
   scope       RoleScope // Enum: PLATFORM, MERCHANT
   description Json?
-  
+
   // Relations
   permissions RolePermission[]
   userRoles   UserRole[]
-  
+
   @@map("roles")
 }
 
@@ -86,7 +87,7 @@ model Permission {
   resource    String   // e.g., 'product', 'order'
   action      String   // e.g., 'create', 'read', 'delete'
   description Json?
-  
+
   // Relations
   roles       RolePermission[]
 
@@ -98,7 +99,7 @@ model RolePermission {
   roleId       Int      @map("role_id")
   permissionId Int      @map("permission_id")
   description  Json?
-  
+
   role       Role       @relation(fields: [roleId], references: [id])
   permission Permission @relation(fields: [permissionId], references: [id])
 
@@ -115,18 +116,18 @@ model UserRole {
   id        Int      @id @default(autoincrement())
   userId    Int      @map("user_id")
   roleId    Int      @map("role_id")
-  
+
   // Scopes
   merchantId Int?    @map("merchant_id")
   agencyId   Int?    @map("agency_id")
   brandId    Int?    @map("brand_id")
-  
+
   createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
   user     User      @relation(fields: [userId], references: [id])
   role     Role      @relation(fields: [roleId], references: [id])
-  
+
   merchant Merchant? @relation(fields: [merchantId], references: [id])
   agency   Agency?   @relation(fields: [agencyId], references: [id])
   brand    Brand?    @relation(fields: [brandId], references: [id])
@@ -141,14 +142,14 @@ model Agency {
   name        String
   taxCode     String?  @map("tax_code")
   bankAccount String?  @map("bank_account")
-  
+
   // Contact Info
   address     String?  @db.Text
   phone       String?
   email       String?
   logo        String?
   businessLicenseUrl String? @map("business_license_url")
-  
+
   // Approval Status (one-time, for registration process)
   approvalStatus    ApprovalStatus    @default(PENDING) @map("approval_status")
   approvedAt        DateTime?         @map("approved_at")
@@ -156,7 +157,7 @@ model Agency {
   rejectedAt        DateTime?         @map("rejected_at")
   rejectedBy        Int?              @map("rejected_by")
   rejectionReason   String?           @map("rejection_reason") @db.Text
-  
+
   // Operational Status (ongoing, can change multiple times)
   operationalStatus OperationalStatus @default(ACTIVE) @map("operational_status")
   statusChangedAt   DateTime?         @map("status_changed_at")
@@ -169,7 +170,7 @@ model Agency {
 
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
-  
+
   brands      Brand[]
   merchants   Merchant[]
   userRoles   UserRole[]
@@ -184,10 +185,10 @@ enum ApprovalStatus {
 }
 
 enum OperationalStatus {
-  ACTIVE      
-  INACTIVE    
-  SUSPENDED   
-  LOCKED      
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  LOCKED
 }
 
 model Brand {
@@ -198,14 +199,14 @@ model Brand {
   description Json?
   metadata    Json?
   businessCategory String? @map("business_category") // Lĩnh vực kinh doanh (VD: F&B, Retail...)
-  
+
   agencyId    Int?    @map("agency_id")
 
   // Relations
   agency     Agency?  @relation(fields: [agencyId], references: [id])
   merchants  Merchant[]
-  categories BrandCategory[] 
-  userRoles  UserRole[] 
+  categories BrandCategory[]
+  userRoles  UserRole[]
 
   @@map("brands")
 }
@@ -220,7 +221,7 @@ model Category {
   // Relations
   parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
   children Category[] @relation("CategoryToCategory")
-  
+
   brands   BrandCategory[]
   merchants MerchantCategory[]
 
@@ -230,7 +231,7 @@ model Category {
 model BrandCategory {
   brandId     Int      @map("brand_id")
   categoryId  Int      @map("category_id")
-  
+
   isFeatured  Boolean  @default(false) @map("is_featured")
   displayOrder Int     @default(0) @map("display_order")
 
@@ -249,7 +250,7 @@ model Tag {
   color       String?
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
-  
+
   merchants   MerchantTag[]
 
   @@map("tags")
@@ -259,7 +260,7 @@ model MerchantTag {
   merchantId  Int      @map("merchant_id")
   tagId       Int      @map("tag_id")
   description Json?
-  
+
   merchant    Merchant @relation(fields: [merchantId], references: [id])
   tag         Tag      @relation(fields: [tagId], references: [id])
 
@@ -271,12 +272,12 @@ model Merchant {
   id          Int      @id @default(autoincrement())
   externalId  String   @unique @default(uuid()) @map("external_id") @db.Uuid
   name        String
-  
+
   // Ownership & Branding
   brandId     Int?     @map("brand_id")
   agencyId    Int?     @map("agency_id")
   ownerId     Int?     @map("owner_id")
-  
+
   address     String?  @db.Text
   city        String?  // Tên thành phố
   contactName String?  @map("contact_name") // contact name
@@ -284,12 +285,12 @@ model Merchant {
   businessCategory String? @map("business_category") // Business items (F&B, Grocery, etc.)
   referralSource String? @map("referral_source") // Reasons to know the app
   hasBusinessLicense Boolean? @default(false) @map("has_business_license") // With or without business license
-  
+
   latitude    Float?
   longitude   Float?
   phone       String?
   logoUrl     String?  @map("logo_url") @db.Text
-  
+
   // Approval Status (one-time, for registration process)
   approvalStatus    ApprovalStatus    @default(PENDING) @map("approval_status")
   approvedAt        DateTime?         @map("approved_at")
@@ -297,21 +298,21 @@ model Merchant {
   rejectedAt        DateTime?         @map("rejected_at")
   rejectedBy        Int?              @map("rejected_by")
   rejectionReason   String?           @map("rejection_reason") @db.Text
-  
+
   // Operational Status (ongoing, can change multiple times)
   operationalStatus OperationalStatus @default(ACTIVE) @map("operational_status")
   statusChangedAt   DateTime?         @map("status_changed_at")
   statusChangedBy   Int?              @map("status_changed_by")
   statusReason      String?           @map("status_reason") @db.Text
-  
-  isAcceptingOrders Boolean @default(true) @map("is_accepting_orders") 
+
+  isAcceptingOrders Boolean @default(true) @map("is_accepting_orders")
   metadata    Json?
-  
+
   // Denormalized rating stats (updated via service when reviews change)
   averageRating   Float     @default(0) @map("average_rating")
   totalReviews    Int       @default(0) @map("total_reviews")
   ratingBreakdown Json?     @map("rating_breakdown") // {"5": 100, "4": 50, "3": 20, "2": 5, "1": 2}
-  
+
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
 
@@ -319,7 +320,7 @@ model Merchant {
   brand        Brand?         @relation(fields: [brandId], references: [id])
   agency       Agency?        @relation(fields: [agencyId], references: [id])
   owner        User?          @relation("MerchantOwner", fields: [ownerId], references: [id])
-  
+
   tags         MerchantTag[]
   products     Product[]
   menus        Menu[]
@@ -338,7 +339,7 @@ model Merchant {
 model MerchantCategory {
   merchantId  Int      @map("merchant_id")
   categoryId  Int      @map("category_id")
-  
+
   isFeatured  Boolean  @default(false) @map("is_featured")
   displayOrder Int     @default(0) @map("display_order")
 
@@ -352,12 +353,12 @@ model MerchantCategory {
 model OperatingHour {
   id         Int      @id @default(autoincrement())
   merchantId Int      @map("merchant_id")
-  
+
   // 0: Sunday, 1: Monday, ..., 6: Saturday
-  dayOfWeek  Int      @map("day_of_week") 
-  
+  dayOfWeek  Int      @map("day_of_week")
+
   // Format: "HH:mm" (e.g., "08:00", "22:00")
-  openTime   String   @map("open_time")   
+  openTime   String   @map("open_time")
   closeTime  String   @map("close_time")
 
   merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
@@ -386,7 +387,7 @@ model MenuSection {
   menuId       Int     @map("menu_id")
   name         Json  // e.g. "Appetizers", "Drinks"
   displayOrder Int     @default(0) @map("display_order")
-  
+
   // Relations
   menu     Menu      @relation(fields: [menuId], references: [id])
   products Product[]
@@ -398,10 +399,10 @@ model Product {
   id          Int      @id @default(autoincrement())
   externalId  String   @unique @default(uuid()) @map("external_id") @db.Uuid
   merchantId  Int      @map("merchant_id")
-  
+
   // Menu Organization
   sectionId   Int?     @map("section_id")
-  
+
   name        Json
   description Json?
   price       Decimal? @db.Decimal(12, 2)
@@ -410,18 +411,18 @@ model Product {
   stock       Int?
   isActive    Boolean? @default(true) @map("is_active")
   metadata    Json?
-  
+
   // Denormalized rating stats (updated via service when reviews change)
   averageRating   Float     @default(0) @map("average_rating")
   totalReviews    Int       @default(0) @map("total_reviews")
-  
+
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
 
   // Relations
   merchant          Merchant          @relation(fields: [merchantId], references: [id])
   section           MenuSection?      @relation(fields: [sectionId], references: [id])
-  
+
   variants          ProductVariant[]
   cartItems         CartItem[]
   orderItems        OrderItem[]
@@ -482,19 +483,47 @@ model CartItem {
 model Courier {
   id              Int      @id @default(autoincrement())
   userId          Int      @unique @map("user_id")
+  externalId      String   @unique @default(uuid()) @map("external_id") @db.Uuid
   name            String?
-  phone           String?
-  status          String?  // 'available' | 'busy' | 'offline'
+  phone           String?  @unique
+  email           String?  @unique
+  approvalStatus  ApprovalStatus @default(PENDING) @map("approval_status")
+  rejectionReason String?  @db.Text @map("rejection_reason")
+  status          String?  // availability: 'available' | 'busy' | 'offline'
   vehicleType     String?  @map("vehicle_type") // 'bike' | 'motorbike' | 'car'
   currentLocation Json?    @map("current_location")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime? @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
 
   // Relations
   user   User    @relation(fields: [userId], references: [id])
   orders Order[]
+  approvalAudits CourierApprovalAudit[]
 
+  @@index([approvalStatus, createdAt])
   @@map("couriers")
+}
+
+enum CourierApprovalAction {
+  APPROVE
+  REJECT
+}
+
+model CourierApprovalAudit {
+  id           Int      @id @default(autoincrement())
+  courierId    Int      @map("courier_id")
+  actorUserId  Int      @map("actor_user_id")
+  action       CourierApprovalAction
+  reason       String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  courier Courier @relation(fields: [courierId], references: [id], onDelete: Cascade)
+  actor   User    @relation(fields: [actorUserId], references: [id], onDelete: Cascade)
+
+  @@index([courierId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@map("courier_approval_audits")
 }
 
 model Promotion {

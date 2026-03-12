@@ -207,6 +207,62 @@ async function main() {
       },
     },
 
+    // Courier (NEW)
+    {
+      resource: 'courier',
+      action: 'create',
+      description: {
+        en: 'Create courier',
+        vi: 'Tạo tài xế giao hàng',
+        ko: '배송 기사 생성',
+      },
+    },
+    {
+      resource: 'courier',
+      action: 'update',
+      description: {
+        en: 'Update courier information',
+        vi: 'Cập nhật thông tin tài xế',
+        ko: '배송 기사 정보 업데이트',
+      },
+    },
+    {
+      resource: 'courier',
+      action: 'delete',
+      description: {
+        en: 'Delete courier',
+        vi: 'Xóa tài xế',
+        ko: '배송 기사 삭제',
+      },
+    },
+    {
+      resource: 'courier',
+      action: 'read',
+      description: {
+        en: 'View courier details',
+        vi: 'Xem chi tiết tài xế',
+        ko: '배송 기사 상세 보기',
+      },
+    },
+    {
+      resource: 'courier',
+      action: 'approve',
+      description: {
+        en: 'Approve courier registration',
+        vi: 'Duyệt đăng ký tài xế',
+        ko: '배송 기사 가입 승인',
+      },
+    },
+    {
+      resource: 'courier',
+      action: 'reject',
+      description: {
+        en: 'Reject courier registration',
+        vi: 'Từ chối đăng ký tài xế',
+        ko: '배송 기사 가입 거절',
+      },
+    },
+
     // System
     {
       resource: 'system',
@@ -349,6 +405,14 @@ async function main() {
         getPerm('order', 'read'),
         getPerm('product', 'read'),
       ].filter(Boolean), // Filter out undefined
+    },
+    {
+      role: 'COURIER',
+      perms: [
+        // Couriers mainly work with orders; fine-tune later if needed
+        getPerm('order', 'read'),
+        getPerm('order', 'update_status'),
+      ].filter(Boolean),
     },
   ];
 
