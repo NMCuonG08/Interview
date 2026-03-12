@@ -10,6 +10,7 @@ import { MerchantModule } from './merchant/merchant.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { BrandModule } from './brand/brand.module';
+import { CourierModule } from './courier/courier.module';
 import { CommonModule } from './common/common.module';
 import { HealthModule } from './health/health.module';
 
@@ -31,6 +32,7 @@ import { HealthModule } from './health/health.module';
     ProductModule,
     CategoryModule,
     BrandModule,
+    CourierModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
