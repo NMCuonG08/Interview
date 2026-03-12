@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { OtpService } from '../otp/otp.service';
 import { RequestOtpDto, VerifyOtpDto } from '../otp/dto/otp.dto';
 import { CreateCourierDto } from './dto/create-courier.dto';
+import { UpdateCourierDto } from './dto/update-courier.dto';
 import { CourierListResponse, CourierQueryDto } from './dto/courier-query.dto';
 import { CourierEntity } from './entities';
 import { CourierQueryBuilder } from './builders/courier-query.builder';
@@ -50,6 +51,7 @@ export class CourierService {
       .withNotDeleted()
       .withApprovalStatus(query.approvalStatus)
       .withSearch(query.search)
+      .withDateRange(query.startDate, query.endDate)
       .build();
 
     const [items, total] = await this.prisma.$transaction([
@@ -82,6 +84,32 @@ export class CourierService {
     }
 
     return new CourierEntity(courier);
+  }
+
+  async update(
+    externalId: string,
+    dto: UpdateCourierDto
+  ): Promise<CourierEntity> {
+    const existing = await this.prisma.courier.findFirst({
+      where: { externalId, deletedAt: null },
+    });
+    if (!existing) {
+      throw new NotFoundException(
+        RESOURCE_MESSAGES.NOT_FOUND(RESOURCE_TARGETS.COURIER)
+      );
+    }
+
+    const updated = await this.prisma.courier.update({
+      where: { id: existing.id },
+      data: {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(dto.email !== undefined && { email: dto.email }),
+        ...(dto.vehicleType !== undefined && { vehicleType: dto.vehicleType }),
+        ...(dto.status !== undefined && { status: dto.status }),
+      },
+    });
+
+    return new CourierEntity(updated);
   }
 
   async create(userId: number, dto: CreateCourierDto): Promise<CourierEntity> {
@@ -132,7 +160,10 @@ export class CourierService {
     });
   }
 
-  async approve(externalId: string, actorUserId: number): Promise<CourierEntity> {
+  async approve(
+    externalId: string,
+    actorUserId: number
+  ): Promise<CourierEntity> {
     const courier = await this.prisma.courier.findFirst({
       where: { externalId, deletedAt: null },
     });

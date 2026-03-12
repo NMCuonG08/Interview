@@ -14,6 +14,14 @@ export class CourierQueryDto extends PaginationDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  @IsOptional()
+  @IsString()
+  startDate?: string; // yyyy-mm-dd
+
+  @IsOptional()
+  @IsString()
+  endDate?: string; // yyyy-mm-dd
 }
 
 export interface CourierListResponse<T> {
@@ -22,4 +30,3 @@ export interface CourierListResponse<T> {
   page: number;
   limit: number;
 }
-

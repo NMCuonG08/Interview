@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Request,
@@ -16,6 +17,7 @@ import { PermissionsGuard } from '../common/guards/permissions.guard';
 import { Permissions } from '../common/decorators/permissions.decorator';
 import { CourierQueryDto } from './dto/courier-query.dto';
 import { CreateCourierDto } from './dto/create-courier.dto';
+import { UpdateCourierDto } from './dto/update-courier.dto';
 import { RejectCourierDto } from './dto/reject-courier.dto';
 
 @Controller('couriers')
@@ -56,6 +58,13 @@ export class CourierController {
   @Permissions('courier:read')
   findOne(@Param('id') externalId: string) {
     return this.courierService.findByExternalId(externalId);
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('courier:update')
+  @Patch(':id')
+  update(@Param('id') externalId: string, @Body() dto: UpdateCourierDto) {
+    return this.courierService.update(externalId, dto);
   }
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
