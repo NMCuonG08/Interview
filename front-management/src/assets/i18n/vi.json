@@ -57,6 +57,7 @@
     "status": {
       "success": "Thành công",
       "error": "Lỗi",
+      "warning": "Cảnh báo",
       "active": "Hoạt động",
       "inactive": "Ngừng hoạt động",
       "pending": "Chờ duyệt",
@@ -143,6 +144,38 @@
       "actions": "Thao tác",
       "comingSoon": "Tính năng đang phát triển",
       "filter": "Lọc"
+    },
+    "users": {
+      "couriers": {
+        "pendingTitle": "Danh sách tài xế",
+        "searchPlaceholder": "Tìm kiếm theo tên hoặc số điện thoại...",
+        "approveConfirm": "Bạn có chắc chắn muốn duyệt tài xế này không?",
+        "approveSuccess": "Duyệt tài xế thành công.",
+        "approveError": "Không thể duyệt tài xế. Vui lòng thử lại.",
+        "rejectReasonRequired": "Vui lòng nhập lý do từ chối.",
+        "rejectSuccess": "Từ chối tài xế thành công.",
+        "rejectError": "Không thể từ chối tài xế. Vui lòng thử lại.",
+        "filters": {
+          "pending": "Chờ duyệt",
+          "approved": "Đã duyệt",
+          "rejected": "Từ chối",
+          "from": "Từ ngày",
+          "to": "Đến ngày",
+          "apply": "Áp dụng",
+          "clear": "Xóa lọc"
+        },
+        "actions": {
+          "approve": "Duyệt",
+          "reject": "Từ chối"
+        },
+        "rejectModal": {
+          "title": "Từ chối tài xế",
+          "description": "Vui lòng nhập lý do từ chối.",
+          "reasonPlaceholder": "Nhập lý do...",
+          "confirm": "Xác nhận từ chối",
+          "cancel": "Hủy"
+        }
+      }
     },
     "partners": {
       "tabs": {

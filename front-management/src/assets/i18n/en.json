@@ -58,6 +58,7 @@
     "status": {
       "success": "Success",
       "error": "Error",
+      "warning": "Warning",
       "active": "Active",
       "inactive": "Inactive",
       "pending": "Pending",
@@ -143,6 +144,38 @@
       "actions": "Actions",
       "comingSoon": "Feature coming soon",
       "filter": "Filter"
+    },
+    "users": {
+      "couriers": {
+        "pendingTitle": "Courier approvals",
+        "searchPlaceholder": "Search by name or phone...",
+        "approveConfirm": "Are you sure you want to approve this courier?",
+        "approveSuccess": "Courier approved successfully.",
+        "approveError": "Failed to approve courier. Please try again.",
+        "rejectReasonRequired": "Please enter a rejection reason.",
+        "rejectSuccess": "Courier rejected successfully.",
+        "rejectError": "Failed to reject courier. Please try again.",
+        "filters": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "from": "From",
+          "to": "To",
+          "apply": "Apply",
+          "clear": "Clear"
+        },
+        "actions": {
+          "approve": "Approve",
+          "reject": "Reject"
+        },
+        "rejectModal": {
+          "title": "Reject courier",
+          "description": "Please enter a rejection reason.",
+          "reasonPlaceholder": "Reason...",
+          "confirm": "Confirm reject",
+          "cancel": "Cancel"
+        }
+      }
     },
     "partners": {
       "tabs": {

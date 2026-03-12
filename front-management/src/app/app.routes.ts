@@ -50,8 +50,11 @@ export const appRoutes: Route[] = [
           },
           {
             path: 'couriers',
-            loadComponent: loadUnderDevelopment,
-            // canActivate: [withPermissions('courier:read')],
+            loadComponent: () =>
+              import(
+                './pages/users/couriers/pending-courier-approvals.component'
+              ).then((m) => m.PendingCourierApprovalsComponent),
+            canActivate: [withPermissions('courier:read')],
           },
           {
             path: 'roles',
