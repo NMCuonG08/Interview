@@ -333,7 +333,8 @@
       "loginSuccess": "Successfully logged in with Google!",
       "linkSuccess": "Google account linked successfully!",
       "linkFailed": "Failed to link account. Please check your password."
-    },    "kakao": {
+    },
+    "kakao": {
       "linkAccount": "Link Kakao Account",
       "linkDescription": "This email is already registered. Please enter your password to link with your Kakao account.",
       "loginSuccess": "Successfully signed in with Kakao!",
@@ -343,7 +344,8 @@
     "oauth": {
       "confirmPassword": "Confirm Password",
       "passwordPlaceholder": "Enter your current password"
-    },    "registerType": {
+    },
+    "registerType": {
       "badge": "Partner onboarding",
       "title": "Join SharkBee",
       "subtitle": "Choose the role so we can support you best.",
@@ -372,6 +374,14 @@
         "question": "Looking to partner with us?",
         "detail": "Register your company, provide transportation, logistics and business solutions.",
         "note": "Manage contracts, track performance, receive timely payments"
+      },
+      "courier": {
+        "badge": "Courier",
+        "title": "Delivery Rider",
+        "desc": "Register to become a delivery rider with SharkBee.",
+        "question": "Do you want to sign up as a delivery rider?",
+        "detail": "Join SharkBee's delivery network and start receiving jobs quickly.",
+        "note": "Enjoy flexible working hours, track earnings, and get operational support"
       }
     }
   },
@@ -419,6 +429,27 @@
       "submit": "Submit",
       "invalidImageType": "Please select a valid image file.",
       "imageTooLarge": "Image too large. Please select a file smaller than 5MB."
+    }
+  },
+  "courierSignup": {
+    "formTitle": "Courier Registration",
+    "images": {
+      "heroAlt": "SharkBee courier illustration"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "fullNameError": "Please enter your full name.",
+      "phone": "Mobile Phone",
+      "phonePlaceholder": "Phone number for OTP",
+      "phoneError": "Please enter a valid phone number.",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "emailError": "Please enter a valid email.",
+      "vehicleType": "Vehicle Type",
+      "vehicleTypePlaceholder": "Example: Motorbike, Van",
+      "vehicleTypeError": "Please enter vehicle type.",
+      "submit": "Submit"
     }
   }
 }

@@ -32,6 +32,7 @@ export class RegisterTypeComponent {
   readonly cards: RegisterCard[] = [
     { key: 'agency', route: '/partner-signup' },
     { key: 'merchant', route: '/merchant-signup' },
+    { key: 'courier', route: '/courier-signup' },
   ];
 
   readonly selected = signal<RegisterCard['key'] | null>(null);

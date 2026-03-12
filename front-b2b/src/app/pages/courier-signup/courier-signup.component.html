@@ -1,0 +1,207 @@
+<div class="min-h-screen bg-surface-base">
+  <header class="py-6 lg:py-10 px-5 lg:px-20">
+    <div class="relative flex items-center justify-center">
+      <app-back-button class="absolute left-0"></app-back-button>
+      <div class="text-center">
+        <h3 class="font-normal text-primary mb-0 leading-tight">SharkBee</h3>
+        <h2 class="font-extrabold text-text-primary leading-tight">
+          {{ 'courierSignup.formTitle' | translate }}
+        </h2>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 px-5 lg:px-20 pb-16">
+    <aside class="w-full lg:w-2/5 xl:w-1/3">
+      <div
+        class="relative rounded-lg overflow-hidden h-full lg:sticky lg:top-8"
+      >
+        <img
+          src="assets/images/store.png"
+          class="hidden lg:block w-full h-auto object-cover rounded-lg"
+          [attr.alt]="'courierSignup.images.heroAlt' | translate"
+        />
+        <img
+          src="assets/images/store.png"
+          class="block lg:hidden w-full h-auto object-cover rounded-lg"
+          [attr.alt]="'courierSignup.images.heroAlt' | translate"
+        />
+      </div>
+    </aside>
+
+    <main class="flex-1">
+      <form class="animate-fadeIn space-y-6" (submit)="onSubmit($event)">
+        <div>
+          <label
+            for="fullName"
+            class="block text-sm font-semibold text-text-primary mb-2"
+          >
+            {{ 'courierSignup.form.fullName' | translate }}
+            <span class="text-primary">*</span>
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            [placeholder]="'courierSignup.form.fullNamePlaceholder' | translate"
+            [(ngModel)]="formData.fullName"
+            name="fullName"
+            (blur)="onBlur('fullName')"
+          />
+          <small
+            class="block text-xs mt-1 text-status-error form-hint error"
+            *ngIf="hasError('fullName')"
+          >
+            <svg
+              class="inline-block w-3 h-3 mr-1 align-[-0.1em]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm9.75-5.25a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V7.5a.75.75 0 01.75-.75zm0 10.5a.938.938 0 100-1.876.938.938 0 000 1.876z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ 'courierSignup.form.fullNameError' | translate }}
+          </small>
+        </div>
+
+        <div>
+          <label
+            for="phoneNumber"
+            class="block text-sm font-semibold text-text-primary mb-2"
+          >
+            {{ 'courierSignup.form.phone' | translate }}
+            <span class="text-primary">*</span>
+          </label>
+          <input
+            type="text"
+            id="phoneNumber"
+            [placeholder]="'courierSignup.form.phonePlaceholder' | translate"
+            [(ngModel)]="formData.phoneNumber"
+            name="phoneNumber"
+            (input)="formatPhoneNumber($event)"
+            (blur)="onBlur('phoneNumber')"
+          />
+          <small
+            class="block text-xs mt-1 text-status-error form-hint error"
+            *ngIf="hasError('phoneNumber')"
+          >
+            <svg
+              class="inline-block w-3 h-3 mr-1 align-[-0.1em]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm9.75-5.25a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V7.5a.75.75 0 01.75-.75zm0 10.5a.938.938 0 100-1.876.938.938 0 000 1.876z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ 'courierSignup.form.phoneError' | translate }}
+          </small>
+        </div>
+
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-semibold text-text-primary mb-2"
+          >
+            {{ 'courierSignup.form.email' | translate }}
+          </label>
+          <input
+            type="email"
+            id="email"
+            [placeholder]="'courierSignup.form.emailPlaceholder' | translate"
+            [(ngModel)]="formData.email"
+            name="email"
+            (blur)="onBlur('email')"
+          />
+          <small
+            class="block text-xs mt-1 text-status-error form-hint error"
+            *ngIf="hasError('email')"
+          >
+            <svg
+              class="inline-block w-3 h-3 mr-1 align-[-0.1em]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm9.75-5.25a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V7.5a.75.75 0 01.75-.75zm0 10.5a.938.938 0 100-1.876.938.938 0 000 1.876z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ 'courierSignup.form.emailError' | translate }}
+          </small>
+        </div>
+
+        <div>
+          <label
+            for="vehicleType"
+            class="block text-sm font-semibold text-text-primary mb-2"
+          >
+            {{ 'courierSignup.form.vehicleType' | translate }}
+            <span class="text-primary">*</span>
+          </label>
+          <input
+            type="text"
+            id="vehicleType"
+            [placeholder]="
+              'courierSignup.form.vehicleTypePlaceholder' | translate
+            "
+            [(ngModel)]="formData.vehicleType"
+            name="vehicleType"
+            (blur)="onBlur('vehicleType')"
+          />
+          <small
+            class="block text-xs mt-1 text-status-error form-hint error"
+            *ngIf="hasError('vehicleType')"
+          >
+            <svg
+              class="inline-block w-3 h-3 mr-1 align-[-0.1em]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm9.75-5.25a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V7.5a.75.75 0 01.75-.75zm0 10.5a.938.938 0 100-1.876.938.938 0 000 1.876z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ 'courierSignup.form.vehicleTypeError' | translate }}
+          </small>
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded text-sm font-semibold cursor-pointer transition-all bg-primary text-content-on-primary shadow-md hover:bg-primary-hover hover:-translate-y-0.5"
+          >
+            {{ 'courierSignup.form.submit' | translate }}
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <app-global-modal
+    [isOpen]="modalConfig.isOpen"
+    [type]="modalConfig.type"
+    [title]="modalConfig.title | translate"
+    [message]="modalConfig.message | translate"
+    (close)="closeModal()"
+  ></app-global-modal>
+
+  <app-otp-modal
+    [isOpen]="showOtpModal"
+    [phoneNumber]="formData.phoneNumber"
+    (verify)="onOtpVerify($event)"
+    (resend)="onOtpResend()"
+    (close)="showOtpModal = false"
+  ></app-otp-modal>
+</div>

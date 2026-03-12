@@ -374,6 +374,14 @@
         "question": "저희와 파트너십을 원하시나요?",
         "detail": "회사를 등록하고 운송, 물류 및 비즈니스 솔루션을 제공하세요.",
         "note": "계약 관리, 성과 추적, 정시 지급 받기"
+      },
+      "courier": {
+        "badge": "Courier",
+        "title": "배달 기사",
+        "desc": "SharkBee와 함께 배달 기사로 등록하세요.",
+        "question": "배달 기사로 등록하시겠어요?",
+        "detail": "SharkBee 배달 네트워크에 참여해 빠르게 배달 요청을 받아보세요.",
+        "note": "유연한 근무 시간, 수익 추적, 운영 지원을 한 번에"
       }
     }
   },
@@ -421,6 +429,27 @@
       "submit": "정보 제출",
       "invalidImageType": "올바른 이미지 파일을 선택해주세요.",
       "imageTooLarge": "이미지가 너무 큽니다. 5MB 이하 파일을 선택해주세요."
+    }
+  },
+  "courierSignup": {
+    "formTitle": "배달 기사 등록",
+    "images": {
+      "heroAlt": "SharkBee 배달 기사 일러스트"
+    },
+    "form": {
+      "fullName": "이름",
+      "fullNamePlaceholder": "이름을 입력하세요",
+      "fullNameError": "이름을 입력해주세요.",
+      "phone": "휴대폰 번호",
+      "phonePlaceholder": "OTP 수신용 전화번호",
+      "phoneError": "올바른 전화번호를 입력해주세요.",
+      "email": "이메일",
+      "emailPlaceholder": "you@example.com",
+      "emailError": "올바른 이메일을 입력해주세요.",
+      "vehicleType": "차량 유형",
+      "vehicleTypePlaceholder": "예: 오토바이, 밴",
+      "vehicleTypeError": "차량 유형을 입력해주세요.",
+      "submit": "제출"
     }
   }
 }

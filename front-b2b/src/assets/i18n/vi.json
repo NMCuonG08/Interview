@@ -374,6 +374,14 @@
         "question": "Bạn muốn hợp tác kinh doanh với chúng tôi?",
         "detail": "Đăng ký công ty, cung cấp dịch vụ vận tải, logistics và các giải pháp kinh doanh.",
         "note": "Quản lý hợp đồng, theo dõi hiệu suất, nhận thanh toán đúng hạn"
+      },
+      "courier": {
+        "badge": "Courier",
+        "title": "Tài xế giao hàng",
+        "desc": "Đăng ký để trở thành tài xế giao hàng cùng SharkBee.",
+        "question": "Bạn muốn đăng ký làm tài xế giao hàng phải không?",
+        "detail": "Tham gia mạng lưới giao hàng của SharkBee và nhận đơn nhanh chóng.",
+        "note": "Linh hoạt thời gian làm việc, theo dõi thu nhập và hỗ trợ vận hành dễ dàng"
       }
     }
   },
@@ -421,6 +429,27 @@
       "submit": "Gửi thông tin",
       "invalidImageType": "Vui lòng chọn file hình ảnh hợp lệ.",
       "imageTooLarge": "Hình ảnh quá lớn. Vui lòng chọn file nhỏ hơn 5MB."
+    }
+  },
+  "courierSignup": {
+    "formTitle": "Đăng ký tài xế giao hàng",
+    "images": {
+      "heroAlt": "Hình minh họa tài xế SharkBee"
+    },
+    "form": {
+      "fullName": "Họ và tên",
+      "fullNamePlaceholder": "Nhập họ và tên đầy đủ",
+      "fullNameError": "Vui lòng nhập họ và tên.",
+      "phone": "Số điện thoại di động",
+      "phonePlaceholder": "Số dùng để nhận OTP",
+      "phoneError": "Vui lòng nhập số điện thoại hợp lệ.",
+      "email": "Thư điện tử",
+      "emailPlaceholder": "you@example.com",
+      "emailError": "Vui lòng nhập email hợp lệ.",
+      "vehicleType": "Loại phương tiện",
+      "vehicleTypePlaceholder": "Ví dụ: Xe máy, Xe van",
+      "vehicleTypeError": "Vui lòng nhập loại phương tiện.",
+      "submit": "Gửi thông tin"
     }
   }
 }
