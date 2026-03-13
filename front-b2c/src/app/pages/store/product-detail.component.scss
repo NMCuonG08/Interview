@@ -1,0 +1,169 @@
+:host {
+  display: block;
+}
+
+.detail-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #334155;
+  text-decoration: none;
+}
+
+.detail-card {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.08);
+}
+
+@media (min-width: 960px) {
+  .detail-card {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.visual-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.image {
+  min-height: 24rem;
+  background: linear-gradient(
+      rgba(241, 245, 249, 0.32),
+      rgba(241, 245, 249, 0.32)
+    ),
+    url('/default-product-gray.svg') center/cover no-repeat;
+  border-radius: 1.5rem;
+}
+
+.quick-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.quick-points span {
+  display: inline-flex;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.content h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.02;
+}
+
+.price {
+  margin: 0;
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.description {
+  margin: 1rem 0 0;
+  color: #475569;
+  line-height: 1.75;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+
+.qty button {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: #e2e8f0;
+  cursor: pointer;
+}
+
+.qty span {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.cta-row {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.add-btn,
+.ghost-link {
+  background: #111827;
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.95rem 1.25rem;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-btn {
+  flex: 1.2;
+}
+
+.ghost-link {
+  flex: 1;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.added-note {
+  margin: 1rem 0 0;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.detail-skeleton .line {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  margin-top: 0.75rem;
+}
+
+.detail-skeleton .line.lg {
+  width: 50%;
+}
+
+.detail-skeleton .line.md {
+  width: 30%;
+}
+
+.empty {
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: #6b7280;
+}
+
+@media (max-width: 720px) {
+  .detail-page {
+    padding: 1rem;
+  }
+
+  .cta-row {
+    flex-direction: column;
+  }
+}

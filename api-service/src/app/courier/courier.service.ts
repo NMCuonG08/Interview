@@ -13,7 +13,10 @@ import { UpdateCourierDto } from './dto/update-courier.dto';
 import { CourierListResponse, CourierQueryDto } from './dto/courier-query.dto';
 import { CourierEntity } from './entities';
 import { CourierQueryBuilder } from './builders/courier-query.builder';
-import { COURIER_REGISTRATION_OTP } from '../common/constants/courier.constant';
+import {
+  COURIER_AVAILABILITY_STATUS,
+  COURIER_REGISTRATION_OTP,
+} from '../common/constants/courier.constant';
 import {
   AUTH_MESSAGES,
   RESOURCE_MESSAGES,
@@ -175,6 +178,14 @@ export class CourierService {
 
     // Idempotent: already approved -> return current state, no audit
     if (courier.approvalStatus === 'APPROVED') {
+      if (!courier.status) {
+        const normalized = await this.prisma.courier.update({
+          where: { id: courier.id },
+          data: { status: COURIER_AVAILABILITY_STATUS.AVAILABLE },
+        });
+        return new CourierEntity(normalized);
+      }
+
       return new CourierEntity(courier);
     }
 
@@ -183,6 +194,7 @@ export class CourierService {
       data: {
         approvalStatus: 'APPROVED',
         rejectionReason: null,
+        status: COURIER_AVAILABILITY_STATUS.AVAILABLE,
       },
     });
 

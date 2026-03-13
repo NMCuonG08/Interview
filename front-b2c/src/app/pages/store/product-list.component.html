@@ -1,0 +1,81 @@
+<section class="store-page">
+  <header class="store-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">B2C catalog</span>
+      <h1>Khách vào là thấy hàng, bấm là thêm giỏ được ngay.</h1>
+      <p>
+        Giao diện được làm lại theo hướng rõ CTA hơn: có thẻ sản phẩm, nút mua,
+        badge giỏ hàng và điều hướng dễ nhìn hơn.
+      </p>
+    </div>
+
+    <a routerLink="/cart" class="hero-cart-link">
+      <span>Open Cart</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M8 5h11l-1.2 6.7A2 2 0 0 1 15.9 13H10a2 2 0 0 1-2-1.6L6.4 3H4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="10" cy="19" r="1.5" />
+        <circle cx="17" cy="19" r="1.5" />
+      </svg>
+    </a>
+  </header>
+
+  <div *ngIf="isLoading()" class="product-grid">
+    <article
+      class="product-card skeleton"
+      *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7, 8]"
+    >
+      <div class="image"></div>
+      <div class="line lg"></div>
+      <div class="line md"></div>
+    </article>
+  </div>
+
+  <p *ngIf="!isLoading() && products().length === 0" class="empty">
+    No products are currently available.
+  </p>
+
+  <div *ngIf="!isLoading() && products().length > 0" class="product-grid">
+    <article class="product-card" *ngFor="let product of products()">
+      <div class="card-media">
+        <div class="image"></div>
+        <span class="stock-chip">{{ product.stock ?? '∞' }} in stock</span>
+      </div>
+
+      <div class="card-body">
+        <h3>{{ resolveName(product) }}</h3>
+        <p class="desc">{{ resolveDescription(product) }}</p>
+        <p class="price">{{ resolvePrice(product) }}</p>
+      </div>
+
+      <div class="card-actions">
+        <a [routerLink]="['/store', product.externalId]" class="ghost-btn">
+          View detail
+        </a>
+        <button type="button" class="solid-btn" (click)="addToCart(product)">
+          Add to cart
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <footer *ngIf="!isLoading() && total() > limit()" class="pager">
+    <button type="button" (click)="onPrevPage()" [disabled]="page() === 1">
+      Prev
+    </button>
+    <span>{{ page() }} / {{ lastPage() }}</span>
+    <button
+      type="button"
+      (click)="onNextPage()"
+      [disabled]="page() === lastPage()"
+    >
+      Next
+    </button>
+  </footer>
+</section>

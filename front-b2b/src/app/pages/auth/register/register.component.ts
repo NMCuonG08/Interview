@@ -57,14 +57,21 @@ export class RegisterComponent {
     this.error.set(null);
 
     const { email, password, username, phone } = this.form.getRawValue();
+    const payload = {
+      email: email.trim(),
+      password,
+      username: username.trim(),
+      phone: phone.trim(),
+    };
+
+    if (!payload.username || !payload.phone) {
+      this.form.markAllAsTouched();
+      this.loading.set(false);
+      return;
+    }
 
     this.auth
-      .register({
-        email,
-        password,
-        username: username || undefined,
-        phone: phone || undefined,
-      })
+      .register(payload)
       .pipe(
         catchError((err) => {
           const message =

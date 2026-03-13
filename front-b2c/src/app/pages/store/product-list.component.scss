@@ -1,0 +1,244 @@
+:host {
+  display: block;
+}
+
+.store-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.store-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1.75rem;
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(255, 248, 242, 0.92)
+    ),
+    linear-gradient(135deg, #fed7aa, #dbeafe);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.hero-copy {
+  max-width: 44rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(249, 115, 22, 0.12);
+  color: #c2410c;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-copy h1 {
+  margin: 0.85rem 0 0.75rem;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+}
+
+.hero-copy p {
+  max-width: 42rem;
+  margin: 0;
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.hero-cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.95rem 1.2rem;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
+}
+
+.hero-cart-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1120px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1.5rem;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+}
+
+.card-media {
+  position: relative;
+}
+
+.product-card .image {
+  height: 13rem;
+  border-radius: 1.2rem;
+  background: linear-gradient(
+      rgba(241, 245, 249, 0.36),
+      rgba(241, 245, 249, 0.36)
+    ),
+    url('/default-product-gray.svg') center/cover no-repeat;
+}
+
+.stock-chip {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.product-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.desc {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.price {
+  margin: 0;
+  color: #dc2626;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.ghost-btn,
+.solid-btn,
+.pager button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ghost-btn {
+  background: #eef2ff;
+  color: #3730a3;
+  flex: 1;
+  text-align: center;
+}
+
+.solid-btn,
+.pager button {
+  background: #0f172a;
+  color: #fff;
+  flex: 1;
+}
+
+.solid-btn:hover,
+.ghost-btn:hover,
+.pager button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.solid-btn:disabled,
+.pager button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.empty {
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: #475569;
+  text-align: center;
+}
+
+.skeleton .line {
+  border-radius: 999px;
+  background: #e5e7eb;
+  height: 0.7rem;
+}
+
+.skeleton .line.lg {
+  width: 80%;
+  margin-bottom: 8px;
+}
+
+.skeleton .line.md {
+  width: 60%;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .store-page {
+    padding: 1rem;
+  }
+
+  .store-hero,
+  .card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

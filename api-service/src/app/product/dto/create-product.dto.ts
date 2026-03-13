@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, IsBoolean, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsBoolean,
+  ValidateNested,
+} from 'class-validator';
 import { Type, Transform, plainToInstance } from 'class-transformer';
 
 export class LocalizedStringDto {
@@ -76,12 +83,21 @@ export class CreateProductDto {
 
   @IsString()
   @IsNotEmpty()
-  sku: string;
+  @Transform(({ value }) => (value === '' ? undefined : value))
+  categoryId: string;
 
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => (value === '' ? undefined : value))
+  sku?: string;
+
+  @IsOptional()
   @IsNumber()
-  @IsNotEmpty()
+  @Transform(({ value }) =>
+    value === '' || value === null ? undefined : value
+  )
   @Type(() => Number)
-  stock: number;
+  stock?: number;
 
   @IsString()
   @IsOptional()

@@ -70,6 +70,11 @@ export class MerchantEntity extends BaseEntity {
 
   // Status
   approvalStatus: string;
+  approvedAt: Date | null;
+  approvedBy: number | null;
+  rejectedAt: Date | null;
+  rejectedBy: number | null;
+  rejectionReason: string | null;
   operationalStatus: string;
 
   // Rating stats
@@ -97,15 +102,6 @@ export class MerchantEntity extends BaseEntity {
   hasBusinessLicense: boolean | null;
 
   @Exclude()
-  approvedAt: Date | null;
-
-  @Exclude()
-  rejectedAt: Date | null;
-
-  @Exclude()
-  rejectionReason: string | null;
-
-  @Exclude()
   statusChangedAt: Date | null;
 
   @Exclude()
@@ -125,12 +121,6 @@ export class MerchantEntity extends BaseEntity {
 
   @Exclude()
   ownerId: number | null;
-
-  @Exclude()
-  approvedBy: number | null;
-
-  @Exclude()
-  rejectedBy: number | null;
 
   @Exclude()
   statusChangedBy: number | null;

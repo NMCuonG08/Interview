@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="720" viewBox="0 0 960 720" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="960" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F3F4F6"/>
+      <stop offset="1" stop-color="#D1D5DB"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="220" y1="140" x2="740" y2="580" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E5E7EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="720" fill="url(#bg)"/>
+  <rect x="190" y="120" width="580" height="480" rx="36" fill="url(#tile)"/>
+  <rect x="250" y="196" width="460" height="290" rx="24" fill="#F8FAFC" opacity="0.85"/>
+
+  <path d="M290 450L390 340C401 328 420 328 432 340L497 404L540 359C552 347 571 347 582 359L670 450" stroke="#9CA3AF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="390" cy="278" r="40" fill="#9CA3AF"/>
+
+  <rect x="286" y="523" width="388" height="16" rx="8" fill="#94A3B8" opacity="0.8"/>
+  <rect x="336" y="553" width="288" height="14" rx="7" fill="#94A3B8" opacity="0.65"/>
+</svg>

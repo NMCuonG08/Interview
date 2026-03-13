@@ -42,6 +42,7 @@
     },
     "loading": "Loading...",
     "noData": "No data available",
+    "noResults": "No results found",
     "actions": "Actions",
     "selectAll": "Select all",
     "selectRow": "Select row",
@@ -145,6 +146,44 @@
       "comingSoon": "Feature coming soon",
       "filter": "Filter"
     },
+    "products": {
+      "title": "Products",
+      "addNew": "Add Product",
+      "selectMerchant": "Select merchant",
+      "createTitle": "Create Product",
+      "editTitle": "Edit Product",
+      "createSuccess": "Product created successfully.",
+      "createError": "Unable to create product. Please try again.",
+      "formInvalid": "Please fill in all required fields before creating the product.",
+      "updateSuccess": "Product updated successfully.",
+      "updateError": "Unable to update product. Please try again.",
+      "deleteConfirm": "Are you sure you want to delete this product?",
+      "deleteSuccess": "Product deleted successfully.",
+      "deleteError": "Unable to delete product. Please try again.",
+      "loadError": "Unable to load products. Please try again.",
+      "merchantRequired": "Please select a merchant before creating a product.",
+      "table": {
+        "name": "PRODUCT NAME",
+        "price": "PRICE",
+        "sku": "SKU",
+        "stock": "STOCK",
+        "status": "STATUS"
+      },
+      "form": {
+        "name": "Product name",
+        "description": "Description",
+        "price": "Price",
+        "category": "Category",
+        "selectCategory": "Select category",
+        "stock": "Stock",
+        "sku": "SKU",
+        "isActive": "Active",
+        "images": "Product images",
+        "imagesHelp": "You can select multiple images at once.",
+        "create": "Create product",
+        "update": "Update"
+      }
+    },
     "users": {
       "couriers": {
         "pendingTitle": "Courier approvals",
@@ -220,6 +259,18 @@
         "searchPlaceholder": "Search merchants...",
         "createSuccess": "Merchant created successfully!",
         "createError": "Unable to create merchant. Please try again.",
+        "approveConfirm": "Are you sure you want to approve this merchant?",
+        "approveSuccess": "Merchant approved successfully.",
+        "approveError": "Failed to approve merchant. Please try again.",
+        "rejectReasonRequired": "Please enter a rejection reason.",
+        "rejectSuccess": "Merchant rejected successfully.",
+        "rejectError": "Failed to reject merchant. Please try again.",
+        "rejectionReasonLabel": "Rejection reason",
+        "rejectionReasonPlaceholder": "Enter rejection reason...",
+        "actions": {
+          "approve": "Approve",
+          "reject": "Reject"
+        },
         "stats": {
           "totalStores": "Total Stores",
           "pendingApproval": "Pending Approval",
@@ -317,6 +368,41 @@
         "activation": "Activation",
         "deactivation": "Deactivation",
         "delete": "Delete"
+      },
+      "products": {
+        "title": "Products",
+        "addNew": "Add Product",
+        "selectMerchant": "Select merchant",
+        "createTitle": "Create Product",
+        "editTitle": "Edit Product",
+        "createSuccess": "Product created successfully.",
+        "createError": "Unable to create product. Please try again.",
+        "updateSuccess": "Product updated successfully.",
+        "updateError": "Unable to update product. Please try again.",
+        "deleteConfirm": "Are you sure you want to delete this product?",
+        "deleteSuccess": "Product deleted successfully.",
+        "deleteError": "Unable to delete product. Please try again.",
+        "loadError": "Unable to load products. Please try again.",
+        "merchantRequired": "Please select a merchant before creating a product.",
+        "table": {
+          "name": "PRODUCT NAME",
+          "price": "PRICE",
+          "sku": "SKU",
+          "stock": "STOCK",
+          "status": "STATUS"
+        },
+        "form": {
+          "name": "Product name",
+          "description": "Description",
+          "price": "Price",
+          "stock": "Stock",
+          "sku": "SKU",
+          "isActive": "Active",
+          "images": "Product images",
+          "imagesHelp": "You can select multiple images at once.",
+          "create": "Create product",
+          "update": "Update"
+        }
       }
     },
     "categories": {

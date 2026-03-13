@@ -42,6 +42,7 @@
     },
     "loading": "로딩 중...",
     "noData": "데이터가 없습니다",
+    "noResults": "검색 결과가 없습니다",
     "actions": "작업",
     "selectAll": "전체 선택",
     "selectRow": "행 선택",
@@ -75,13 +76,6 @@
       "reset": "초기화",
       "of": "/",
       "visible": "열 표시됨"
-    },
-    "validation": {
-      "required": "필수 입력 항목입니다",
-      "minLength": "최소 길이가 부족합니다",
-      "invalidFormat": "형식이 올바르지 않습니다",
-      "invalidEmail": "이메일이 올바르지 않습니다",
-      "invalidPhone": "전화번호가 올바르지 않습니다"
     },
     "validation": {
       "required": "필수 입력 항목입니다",
@@ -214,6 +208,44 @@
       "comingSoon": "개발 중인 기능",
       "filter": "필터"
     },
+    "products": {
+      "title": "상품",
+      "addNew": "상품 추가",
+      "selectMerchant": "매장 선택",
+      "createTitle": "상품 생성",
+      "editTitle": "상품 수정",
+      "createSuccess": "상품이 성공적으로 생성되었습니다.",
+      "createError": "상품을 생성할 수 없습니다. 다시 시도해 주세요.",
+      "formInvalid": "상품 생성 전에 필수 항목을 모두 입력해 주세요.",
+      "updateSuccess": "상품이 성공적으로 수정되었습니다.",
+      "updateError": "상품을 수정할 수 없습니다. 다시 시도해 주세요.",
+      "deleteConfirm": "이 상품을 삭제하시겠습니까?",
+      "deleteSuccess": "상품이 성공적으로 삭제되었습니다.",
+      "deleteError": "상품을 삭제할 수 없습니다. 다시 시도해 주세요.",
+      "loadError": "상품 목록을 불러올 수 없습니다. 다시 시도해 주세요.",
+      "merchantRequired": "상품을 생성하려면 먼저 매장을 선택해 주세요.",
+      "table": {
+        "name": "상품명",
+        "price": "가격",
+        "sku": "SKU",
+        "stock": "재고",
+        "status": "상태"
+      },
+      "form": {
+        "name": "상품명",
+        "description": "설명",
+        "price": "가격",
+        "category": "카테고리",
+        "selectCategory": "카테고리 선택",
+        "stock": "재고",
+        "sku": "SKU",
+        "isActive": "활성 상태",
+        "images": "상품 이미지",
+        "imagesHelp": "여러 이미지를 한 번에 선택할 수 있습니다.",
+        "create": "상품 생성",
+        "update": "수정"
+      }
+    },
     "users": {
       "couriers": {
         "pendingTitle": "기사 승인 관리",
@@ -295,6 +327,18 @@
         "searchPlaceholder": "매장 검색...",
         "createSuccess": "매장이 성공적으로 생성되었습니다!",
         "createError": "매장을 생성할 수 없습니다. 다시 시도해 주세요.",
+        "approveConfirm": "이 매장을 승인하시겠습니까?",
+        "approveSuccess": "매장이 성공적으로 승인되었습니다.",
+        "approveError": "매장 승인에 실패했습니다. 다시 시도해 주세요.",
+        "rejectReasonRequired": "거절 사유를 입력해 주세요.",
+        "rejectSuccess": "매장이 성공적으로 거절되었습니다.",
+        "rejectError": "매장 거절에 실패했습니다. 다시 시도해 주세요.",
+        "rejectionReasonLabel": "거절 사유",
+        "rejectionReasonPlaceholder": "거절 사유를 입력하세요...",
+        "actions": {
+          "approve": "승인",
+          "reject": "거절"
+        },
         "stats": {
           "totalStores": "총 매장 수",
           "pendingApproval": "승인 대기",
@@ -398,6 +442,41 @@
         "activation": "활성화",
         "deactivation": "비활성화",
         "delete": "삭제"
+      },
+      "products": {
+        "title": "상품",
+        "addNew": "상품 추가",
+        "selectMerchant": "매장 선택",
+        "createTitle": "상품 생성",
+        "editTitle": "상품 수정",
+        "createSuccess": "상품이 성공적으로 생성되었습니다.",
+        "createError": "상품을 생성할 수 없습니다. 다시 시도해 주세요.",
+        "updateSuccess": "상품이 성공적으로 수정되었습니다.",
+        "updateError": "상품을 수정할 수 없습니다. 다시 시도해 주세요.",
+        "deleteConfirm": "이 상품을 삭제하시겠습니까?",
+        "deleteSuccess": "상품이 성공적으로 삭제되었습니다.",
+        "deleteError": "상품을 삭제할 수 없습니다. 다시 시도해 주세요.",
+        "loadError": "상품 목록을 불러올 수 없습니다. 다시 시도해 주세요.",
+        "merchantRequired": "상품을 생성하려면 먼저 매장을 선택해 주세요.",
+        "table": {
+          "name": "상품명",
+          "price": "가격",
+          "sku": "SKU",
+          "stock": "재고",
+          "status": "상태"
+        },
+        "form": {
+          "name": "상품명",
+          "description": "설명",
+          "price": "가격",
+          "stock": "재고",
+          "sku": "SKU",
+          "isActive": "활성 상태",
+          "images": "상품 이미지",
+          "imagesHelp": "여러 이미지를 한 번에 선택할 수 있습니다.",
+          "create": "상품 생성",
+          "update": "수정"
+        }
       }
     },
     "categories": {

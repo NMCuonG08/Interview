@@ -125,10 +125,10 @@ export const MERCHANTS_TABLE_CONFIG: TableConfig<Merchant> = {
       labelKey: 'admin.partners.merchants.table.status',
       type: 'status',
       statusConfig: {
-        active: { labelKey: 'common.status.active', variant: 'success' },
-        inactive: { labelKey: 'common.status.inactive', variant: 'default' },
-        suspended: { labelKey: 'common.status.suspended', variant: 'warning' },
-        locked: { labelKey: 'common.status.locked', variant: 'error' },
+        ACTIVE: { labelKey: 'common.status.active', variant: 'success' },
+        INACTIVE: { labelKey: 'common.status.inactive', variant: 'default' },
+        SUSPENDED: { labelKey: 'common.status.suspended', variant: 'warning' },
+        LOCKED: { labelKey: 'common.status.locked', variant: 'error' },
       },
     },
     {

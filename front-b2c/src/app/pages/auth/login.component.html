@@ -1,0 +1,100 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button
+        type="button"
+        [class.active]="isLogin()"
+        (click)="switchMode('login')"
+      >
+        Sign In
+      </button>
+      <button
+        type="button"
+        [class.active]="!isLogin()"
+        (click)="switchMode('register')"
+      >
+        Create Account
+      </button>
+    </div>
+
+    <p *ngIf="error()" class="auth-error">{{ error() }}</p>
+
+    <!-- Login Form -->
+    <form
+      *ngIf="isLogin()"
+      [formGroup]="loginForm"
+      (ngSubmit)="submit()"
+      class="auth-form"
+    >
+      <label for="login-email">Email</label>
+      <input
+        id="login-email"
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+
+      <label for="login-password">Password</label>
+      <input
+        id="login-password"
+        type="password"
+        formControlName="password"
+        placeholder="••••••"
+        autocomplete="current-password"
+      />
+
+      <button type="submit" [disabled]="isDisabled()" class="submit-btn">
+        {{ loading() ? 'Signing in…' : 'Sign In' }}
+      </button>
+    </form>
+
+    <!-- Register Form -->
+    <form
+      *ngIf="!isLogin()"
+      [formGroup]="registerForm"
+      (ngSubmit)="submit()"
+      class="auth-form"
+    >
+      <label for="reg-email">Email</label>
+      <input
+        id="reg-email"
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+
+      <label for="reg-password">Password</label>
+      <input
+        id="reg-password"
+        type="password"
+        formControlName="password"
+        placeholder="••••••"
+        autocomplete="new-password"
+      />
+
+      <label for="reg-username">Username</label>
+      <input
+        id="reg-username"
+        type="text"
+        formControlName="username"
+        placeholder="your name"
+        autocomplete="username"
+      />
+
+      <label for="reg-phone">Phone</label>
+      <input
+        id="reg-phone"
+        type="tel"
+        formControlName="phone"
+        placeholder="0901234567"
+        autocomplete="tel"
+      />
+
+      <button type="submit" [disabled]="isDisabled()" class="submit-btn">
+        {{ loading() ? 'Creating account…' : 'Create Account' }}
+      </button>
+    </form>
+  </div>
+</section>

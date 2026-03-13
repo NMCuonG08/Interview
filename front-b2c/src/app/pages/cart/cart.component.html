@@ -1,0 +1,83 @@
+<section class="cart-page">
+  <header class="cart-header">
+    <div>
+      <span class="eyebrow">Saved cart</span>
+      <h1>Cart summary</h1>
+      <p>
+        {{ itemCount() }} item{{ itemCount() === 1 ? '' : 's' }} ready for
+        checkout.
+      </p>
+    </div>
+    <a routerLink="/store" class="back-link">Continue shopping</a>
+  </header>
+
+  <p *ngIf="items().length === 0" class="empty">Your cart is empty.</p>
+
+  <p *ngIf="hasMultipleMerchants()" class="warning">
+    Your cart contains products from multiple merchants. Checkout will
+    automatically split this cart into separate orders by merchant.
+  </p>
+  <p *ngIf="checkoutNotice()" class="warning warning-strong">
+    {{ checkoutNotice() }}
+  </p>
+
+  <div *ngIf="items().length > 0" class="items">
+    <article class="item" *ngFor="let item of items()">
+      <div class="item-main">
+        <div class="thumb"></div>
+        <div>
+          <h3>{{ resolveItemName(item.product.externalId) }}</h3>
+          <p>
+            {{
+              resolveItemTotal(item.product.externalId, item.quantity)
+                | number : '1.0-0' : 'vi-VN'
+            }}
+            VND
+          </p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="qty-stepper">
+          <button
+            type="button"
+            (click)="decrease(item.product.externalId, item.quantity)"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            min="1"
+            [value]="item.quantity"
+            (change)="changeQuantity(item.product.externalId, $event)"
+          />
+          <button
+            type="button"
+            (click)="increase(item.product.externalId, item.quantity)"
+          >
+            +
+          </button>
+        </div>
+        <button
+          type="button"
+          class="danger-btn"
+          (click)="remove(item.product.externalId)"
+        >
+          Delete
+        </button>
+      </div>
+    </article>
+
+    <div class="summary">
+      <strong>Total</strong>
+      <strong>{{ totalAmount() | number : '1.0-0' : 'vi-VN' }} VND</strong>
+    </div>
+
+    <button
+      type="button"
+      (click)="checkout()"
+      [disabled]="items().length === 0"
+    >
+      Proceed to Checkout
+    </button>
+  </div>
+</section>

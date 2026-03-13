@@ -5,10 +5,11 @@
   "scripts": {
     "prepare": "husky install",
     "start:api-service": "npx prisma generate && npx prisma migrate dev && nx serve api-service",
-     "start:api-service:dev": "nx serve api-service --output-style=stream",
+    "start:api-service:dev": "nx serve api-service --output-style=stream",
     "start:api-service:prod": "NODE_ENV=production nx serve api-service",
     "test:api-service": "nx test api-service",
     "start:front-b2b": "nx serve front-b2b",
+    "start:front-b2c": "nx serve front-b2c",
     "start:front-management": "nx serve front-management",
     "db:studio": "prisma studio"
   },

@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client';
 import {
   PRODUCT_MESSAGES,
   COMMON_MESSAGES,
+  RESOURCE_MESSAGES,
 } from '../common/constants/messages.constant';
 import { StorageService } from '../common/services/storage.service';
 import { toLocalizedJson } from '../common/utils/localization.util';
@@ -13,6 +14,8 @@ import { PRODUCT_CONSTANTS } from '../common/constants/product.constant';
 import { PRIMITIVE_TYPES } from '../common/constants/common.constant';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { PaginatedResult } from '../common/interfaces/paginated-result.interface';
+import { ROLE } from '../common/constants/role.constants';
+import { RESOURCE_TARGETS } from '../common/constants/resource.constant';
 
 @Injectable()
 export class ProductService {
@@ -21,11 +24,30 @@ export class ProductService {
     private storageService: StorageService
   ) {}
 
+  private serializePrice(
+    price: Prisma.Decimal | number | string | null | undefined
+  ): number | null {
+    if (price == null) {
+      return null;
+    }
+
+    return typeof price === 'number' ? price : Number(price);
+  }
+
+  private serializeProduct<
+    T extends { price?: Prisma.Decimal | number | string | null }
+  >(product: T): Omit<T, 'price'> & { price: number | null } {
+    return {
+      ...product,
+      price: this.serializePrice(product.price),
+    };
+  }
+
   async create(
     createProductDto: CreateProductDto,
     files?: Array<Express.Multer.File>
   ) {
-    const { name, description, metadata, merchantId, ...rest } =
+    const { name, description, metadata, merchantId, categoryId, ...rest } =
       createProductDto;
 
     const imageUrls: string[] = [];
@@ -57,9 +79,11 @@ export class ProductService {
       }
     }
 
+    metaObj.categoryId = categoryId;
+
     const metaJson = metaObj as unknown as Prisma.InputJsonValue;
 
-    return this.prisma.product.create({
+    const product = await this.prisma.product.create({
       data: {
         ...rest,
         merchantId: merchantId as unknown as number,
@@ -68,14 +92,117 @@ export class ProductService {
         metadata: metaJson,
       },
     });
+
+    return this.serializeProduct(product);
   }
 
-  async findAll() {
-    return this.prisma.product.findMany({
-      include: {
-        merchant: true,
+  async findAll(
+    paginationDto: PaginationDto,
+    merchantExternalId?: string
+  ): Promise<PaginatedResult<any>> {
+    let merchantId: number | undefined;
+
+    if (merchantExternalId) {
+      const merchant = await this.prisma.merchant.findUnique({
+        where: { externalId: merchantExternalId },
+        select: { id: true },
+      });
+
+      if (!merchant) {
+        throw new NotFoundException(COMMON_MESSAGES.INVALID_MERCHANT_ID);
+      }
+
+      merchantId = merchant.id;
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const where = merchantId ? { merchantId } : {};
+
+    const [rows, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          merchant: {
+            select: { externalId: true },
+          },
+        },
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+
+    const data = rows.map((product) => ({
+      ...this.serializeProduct(product),
+      merchantExternalId: product.merchant.externalId,
+    }));
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+        limit,
       },
-    });
+    };
+  }
+
+  async findPublic(
+    paginationDto: PaginationDto
+  ): Promise<PaginatedResult<any>> {
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [rows, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where: {
+          isActive: true,
+        },
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          merchant: {
+            select: { externalId: true },
+          },
+        },
+      }),
+      this.prisma.product.count({
+        where: {
+          isActive: true,
+        },
+      }),
+    ]);
+
+    const data = rows.map((p) => ({
+      externalId: p.externalId,
+      name: p.name,
+      description: p.description,
+      price: this.serializePrice(p.price),
+      currency: p.currency,
+      sku: p.sku,
+      stock: p.stock,
+      isActive: p.isActive,
+      metadata: p.metadata,
+      merchantId: p.merchantId,
+      merchantExternalId: p.merchant.externalId,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+    }));
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+        limit,
+      },
+    };
   }
 
   async findAllByMerchant(
@@ -90,24 +217,64 @@ export class ProductService {
       throw new NotFoundException(COMMON_MESSAGES.INVALID_MERCHANT_ID);
     }
 
+    return this.findAllByMerchantId(merchant.id, paginationDto);
+  }
+
+  async findAllByCurrentMerchant(
+    userId: number,
+    paginationDto: PaginationDto
+  ): Promise<PaginatedResult<any>> {
+    const merchantRole = await this.prisma.userRole.findFirst({
+      where: {
+        userId,
+        merchantId: { not: null },
+        role: { name: ROLE.MERCHANT_OWNER },
+      },
+      select: { merchantId: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (merchantRole?.merchantId) {
+      return this.findAllByMerchantId(merchantRole.merchantId, paginationDto);
+    }
+
+    const ownedMerchant = await this.prisma.merchant.findFirst({
+      where: { ownerId: userId },
+      select: { id: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!ownedMerchant) {
+      throw new NotFoundException(
+        RESOURCE_MESSAGES.NOT_FOUND(RESOURCE_TARGETS.MERCHANT)
+      );
+    }
+
+    return this.findAllByMerchantId(ownedMerchant.id, paginationDto);
+  }
+
+  private async findAllByMerchantId(
+    merchantId: number,
+    paginationDto: PaginationDto
+  ): Promise<PaginatedResult<any>> {
     const { page = 1, limit = 10 } = paginationDto;
     const skip = (page - 1) * limit;
 
-    const [data, total] = await Promise.all([
+    const [rows, total] = await Promise.all([
       this.prisma.product.findMany({
-        where: { merchantId: merchant.id },
+        where: { merchantId },
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {},
       }),
       this.prisma.product.count({
-        where: { merchantId: merchant.id },
+        where: { merchantId },
       }),
     ]);
 
     return {
-      data,
+      data: rows.map((row) => this.serializeProduct(row)),
       meta: {
         total,
         page,
@@ -127,13 +294,18 @@ export class ProductService {
     if (!product) {
       throw new NotFoundException(PRODUCT_MESSAGES.PRODUCT_NOT_FOUND);
     }
-    return product;
+
+    return {
+      ...this.serializeProduct(product),
+      merchantExternalId: product.merchant.externalId,
+    };
   }
 
   async update(externalId: string, updateProductDto: UpdateProductDto) {
     await this.findOne(externalId);
 
-    const { name, description, metadata, ...rest } = updateProductDto;
+    const { name, description, metadata, categoryId, ...rest } =
+      updateProductDto;
 
     const data: Prisma.ProductUpdateInput = {
       ...rest,
@@ -145,14 +317,46 @@ export class ProductService {
     if (description) {
       data.description = description as unknown as Prisma.InputJsonValue;
     }
-    if (metadata) {
-      data.metadata = metadata as unknown as Prisma.InputJsonValue;
+    if (metadata || categoryId !== undefined) {
+      const currentProduct = await this.prisma.product.findUnique({
+        where: { externalId },
+        select: { metadata: true },
+      });
+
+      const currentMetadata =
+        currentProduct?.metadata &&
+        typeof currentProduct.metadata === PRIMITIVE_TYPES.OBJECT &&
+        !Array.isArray(currentProduct.metadata)
+          ? (currentProduct.metadata as Record<string, unknown>)
+          : {};
+
+      const incomingMetadata = metadata
+        ? typeof metadata === PRIMITIVE_TYPES.STRING
+          ? (JSON.parse(metadata as unknown as string) as Record<
+              string,
+              unknown
+            >)
+          : (metadata as unknown as Record<string, unknown>)
+        : {};
+
+      const mergedMetadata: Record<string, unknown> = {
+        ...currentMetadata,
+        ...incomingMetadata,
+      };
+
+      if (categoryId !== undefined) {
+        mergedMetadata.categoryId = categoryId;
+      }
+
+      data.metadata = mergedMetadata as Prisma.InputJsonValue;
     }
 
-    return this.prisma.product.update({
+    const product = await this.prisma.product.update({
       where: { externalId },
       data,
     });
+
+    return this.serializeProduct(product);
   }
 
   async remove(externalId: string) {

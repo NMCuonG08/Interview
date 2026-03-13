@@ -240,12 +240,45 @@
     "viewMore": "View More",
     "partnerReg": "Partner Registration",
     "start": "Start",
+    "validation": {
+      "required": "This field is required"
+    },
     "button": {
       "cancel": "Cancel",
       "submit": "Submit",
       "confirm": "Confirm",
-      "close": "Close"
+      "close": "Close",
+      "addToCart": "Add to cart",
+      "back": "Back"
     }
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty.",
+    "total": "Total",
+    "checkout": "Proceed to checkout",
+    "multiMerchantWarning": "Your cart currently contains products from multiple merchants. Please checkout one merchant at a time."
+  },
+  "store": {
+    "title": "Store",
+    "viewCart": "View cart",
+    "empty": "No products are currently available.",
+    "notFound": "Product not found or no longer available."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "backToCart": "Back to cart",
+    "deliveryInfo": "Delivery information",
+    "deliveryAddressNote": "Delivery address note",
+    "deliveryAddressPlaceholder": "e.g. Tower A, 5th floor, call before delivery...",
+    "orderSummary": "Order summary",
+    "placeOrder": "Place order",
+    "submitting": "Submitting...",
+    "successTitle": "Order placed",
+    "successMessage": "Your order has been created successfully.",
+    "errorTitle": "Order failed",
+    "errorMessage": "Could not create the order. Please try again.",
+    "invalidMerchant": "Unable to resolve merchant information for the current cart."
   },
   "auth": {
     "common": {

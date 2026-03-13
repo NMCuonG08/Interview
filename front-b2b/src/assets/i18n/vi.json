@@ -240,12 +240,45 @@
     "viewMore": "Xem thêm",
     "partnerReg": "Đăng ký đối tác",
     "start": "Bắt đầu",
+    "validation": {
+      "required": "Trường này là bắt buộc"
+    },
     "button": {
       "cancel": "Hủy",
       "submit": "Gửi",
       "confirm": "Xác nhận",
-      "close": "Đóng"
+      "close": "Đóng",
+      "addToCart": "Thêm vào giỏ hàng",
+      "back": "Quay lại"
     }
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống.",
+    "total": "Tổng tiền",
+    "checkout": "Tiến hành thanh toán",
+    "multiMerchantWarning": "Giỏ hàng hiện có sản phẩm từ nhiều cửa hàng. Vui lòng đặt hàng từng cửa hàng một."
+  },
+  "store": {
+    "title": "Cửa hàng",
+    "viewCart": "Xem giỏ hàng",
+    "empty": "Chưa có sản phẩm nào đang mở bán.",
+    "notFound": "Không tìm thấy sản phẩm hoặc sản phẩm đã ngừng bán."
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "backToCart": "Quay lại giỏ hàng",
+    "deliveryInfo": "Thông tin giao hàng",
+    "deliveryAddressNote": "Ghi chú địa chỉ giao hàng",
+    "deliveryAddressPlaceholder": "Ví dụ: Tòa nhà A, tầng 5, gọi trước khi giao...",
+    "orderSummary": "Tóm tắt đơn hàng",
+    "placeOrder": "Đặt đơn",
+    "submitting": "Đang xử lý...",
+    "successTitle": "Đặt hàng thành công",
+    "successMessage": "Đơn hàng của bạn đã được tạo thành công.",
+    "errorTitle": "Đặt hàng thất bại",
+    "errorMessage": "Không thể tạo đơn hàng. Vui lòng thử lại.",
+    "invalidMerchant": "Không thể xác định cửa hàng của giỏ hàng hiện tại."
   },
   "auth": {
     "common": {

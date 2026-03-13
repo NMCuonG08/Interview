@@ -131,8 +131,27 @@ export const appRoutes: Route[] = [
           },
           {
             path: 'list',
-            loadComponent: loadUnderDevelopment,
+            loadComponent: () =>
+              import(
+                './pages/products/products-list/products-list.component'
+              ).then((m) => m.ProductsListComponent),
             canActivate: [withPermissions('product:read')],
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import(
+                './pages/products/product-form/product-form.component'
+              ).then((m) => m.ProductFormComponent),
+            canActivate: [withPermissions('product:create')],
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import(
+                './pages/products/product-form/product-form.component'
+              ).then((m) => m.ProductFormComponent),
+            canActivate: [withPermissions('product:update')],
           },
           {
             path: 'menu',
@@ -150,7 +169,10 @@ export const appRoutes: Route[] = [
       // Orders
       {
         path: 'orders',
-        loadComponent: loadUnderDevelopment,
+        loadComponent: () =>
+          import('./pages/orders/orders.component').then(
+            (m) => m.OrdersComponent
+          ),
 
         canActivate: [withPermissions('order:read')],
       },

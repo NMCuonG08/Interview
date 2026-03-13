@@ -39,9 +39,13 @@
       class="xl:mt-0 flex xl:grid xl:grid-cols-4 gap-3 xl:gap-[13px] min-w-max xl:min-w-0"
     >
       @for (card of statisticCards(); track card.labelKey) {
-      <div class="w-fit xl:w-auto shrink-0 xl:shrink">
+      <button
+        type="button"
+        class="w-fit xl:w-auto shrink-0 xl:shrink cursor-pointer text-left"
+        (click)="onStatisticCardClick(card.labelKey)"
+      >
         <app-statistic-card [config]="card" />
-      </div>
+      </button>
       }
     </div>
   </section>
@@ -479,4 +483,118 @@
     (submitForm)="onAddMerchantSubmit($event)"
     (cancel)="closeAddMerchantPanel()"
   />
+</app-slide-over-panel>
+
+<!-- View Merchant Slide-over Panel -->
+<app-slide-over-panel
+  [isOpen]="isViewMerchantPanelOpen()"
+  [config]="viewMerchantPanelConfig"
+  (closePanel)="closeViewMerchantPanel()"
+>
+  <div class="space-y-4 p-4" *ngIf="selectedMerchant() as merchant">
+    <div>
+      <h3 class="text-lg font-semibold text-content-primary">
+        {{ merchant.name }}
+      </h3>
+      <p class="text-sm text-content-tertiary">
+        {{ merchant.code }}
+      </p>
+    </div>
+
+    <div class="space-y-2 text-sm">
+      <div>
+        <span class="font-medium">
+          {{ 'admin.partners.merchants.table.address' | translate }}:
+        </span>
+        <span class="ml-1">{{ merchant.address || '--' }}</span>
+      </div>
+      <div>
+        <span class="font-medium">
+          {{ 'admin.partners.merchants.table.phone' | translate }}:
+        </span>
+        <span class="ml-1">{{ merchant.phone || '--' }}</span>
+      </div>
+      <div>
+        <span class="font-medium">
+          {{ 'admin.partners.merchants.table.owner' | translate }}:
+        </span>
+        <span class="ml-1">{{ merchant.ownerName || '--' }}</span>
+      </div>
+      <div>
+        <span class="font-medium">
+          {{ 'admin.partners.merchants.table.status' | translate }}:
+        </span>
+        <span class="ml-1">
+          @if (merchant.approvalStatus === 'PENDING') {
+          {{ 'common.status.pending' | translate }} } @else if
+          (merchant.approvalStatus === 'APPROVED') {
+          {{ 'common.status.approved' | translate }} } @else {
+          {{ 'common.status.rejected' | translate }}
+          }
+        </span>
+      </div>
+      <div>
+        <span class="font-medium">
+          {{ 'admin.partners.merchants.form.operationalStatus' | translate }}:
+        </span>
+        <span class="ml-1">
+          @if (merchant.operationalStatus === 'ACTIVE') {
+          {{ 'common.status.active' | translate }} } @else if
+          (merchant.operationalStatus === 'INACTIVE') {
+          {{ 'common.status.inactive' | translate }} } @else if
+          (merchant.operationalStatus === 'SUSPENDED') {
+          {{ 'common.status.suspended' | translate }} } @else {
+          {{ 'common.status.locked' | translate }}
+          }
+        </span>
+      </div>
+    </div>
+
+    @if (merchant.approvalStatus === 'PENDING') {
+    <div class="space-y-2">
+      <label
+        for="merchant-rejection-reason"
+        class="block text-sm font-medium text-content-primary"
+      >
+        {{ 'admin.partners.merchants.rejectionReasonLabel' | translate }}
+      </label>
+      <textarea
+        id="merchant-rejection-reason"
+        rows="3"
+        class="w-full rounded-lg border border-border px-3 py-2 text-sm text-content-primary focus:outline-none focus:ring-2 focus:ring-primary"
+        [placeholder]="
+          'admin.partners.merchants.rejectionReasonPlaceholder' | translate
+        "
+        [value]="rejectReason()"
+        (input)="onRejectReasonChange($any($event.target).value)"
+      ></textarea>
+    </div>
+    }
+
+    <div class="pt-4 flex gap-2">
+      <button
+        *ngIf="merchant.approvalStatus === 'PENDING'"
+        type="button"
+        class="px-4 py-2 rounded bg-primary text-content-on-primary text-sm"
+        (click)="approveMerchant(merchant)"
+      >
+        {{ 'admin.partners.merchants.actions.approve' | translate }}
+      </button>
+      <button
+        *ngIf="merchant.approvalStatus === 'PENDING'"
+        type="button"
+        class="px-4 py-2 rounded border border-status-error text-status-error text-sm"
+        (click)="rejectMerchant(merchant)"
+      >
+        {{ 'admin.partners.merchants.actions.reject' | translate }}
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 rounded border text-sm"
+        (click)="closeViewMerchantPanel()"
+      >
+        {{ 'common.button.close' | translate }}
+      </button>
+    </div>
+  </div>
 </app-slide-over-panel>

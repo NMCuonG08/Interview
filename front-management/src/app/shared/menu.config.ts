@@ -44,6 +44,7 @@ export const ADMIN_NAV_CONFIG: readonly NavItem[] = [
   {
     labelKey: 'admin.nav.partners',
     icon: 'building',
+    hiddenForRoles: ['MERCHANT_OWNER'],
     anyPermissions: [
       { resource: 'agency', action: 'read' },
       { resource: 'merchant', action: 'read' },
@@ -74,7 +75,10 @@ export const ADMIN_NAV_CONFIG: readonly NavItem[] = [
   {
     labelKey: 'admin.nav.products',
     icon: 'package',
-    permission: { resource: 'category', action: 'read' },
+    anyPermissions: [
+      { resource: 'product', action: 'read' },
+      { resource: 'category', action: 'read' },
+    ],
     children: [
       {
         labelKey: 'admin.nav.categories',
