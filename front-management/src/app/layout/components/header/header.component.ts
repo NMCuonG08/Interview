@@ -100,6 +100,15 @@ export class HeaderComponent implements AfterViewInit {
   );
 
   private hasNavPermission(item: NavItem): boolean {
+    const userRoles = this.auth.currentUser()?.roles ?? [];
+
+    if (
+      item.hiddenForRoles &&
+      item.hiddenForRoles.some((role) => userRoles.includes(role))
+    ) {
+      return false;
+    }
+
     if (item.anyPermissions && item.anyPermissions.length > 0) {
       const permissionKeys = item.anyPermissions.map(
         (p) => `${p.resource}:${p.action}`

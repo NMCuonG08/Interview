@@ -102,6 +102,21 @@ export class MerchantsComponent implements OnInit {
     headerIcon: 'assets/icons/icon-stat-store.svg', // Store/shop icon SVG path
   };
 
+  // View-merchant panel state
+  readonly isViewMerchantPanelOpen = signal(false);
+  readonly viewMerchantPanelConfig: SlideOverConfig = {
+    titleKey: 'admin.partners.merchants.title',
+    width: 'lg',
+    showCloseButton: true,
+    showBackdrop: true,
+    closeOnBackdropClick: true,
+    closeOnEscape: true,
+    showHeader: true,
+    headerIcon: 'assets/icons/icon-stat-store.svg',
+  };
+
+  readonly selectedMerchant = signal<Merchant | null>(null);
+
   // Statistics data from API
   readonly statisticsData = signal<MerchantStatistics>({
     totalApproved: 0,
@@ -147,8 +162,11 @@ export class MerchantsComponent implements OnInit {
 
   // Filters
   readonly locationFilter = signal('');
-  readonly statusFilter = signal('');
+  readonly statusFilter = signal<'PENDING' | 'APPROVED' | 'REJECTED'>(
+    'APPROVED'
+  );
   readonly agencyFilter = signal('');
+  readonly rejectReason = signal('');
 
   ngOnInit(): void {
     this.loadCategories();
@@ -207,13 +225,21 @@ export class MerchantsComponent implements OnInit {
 
     const { page, pageSize } = this.pagination();
 
+    const params: any = {
+      page,
+      limit: pageSize,
+      include: 'statistics',
+    };
+
+    if (this.statusFilter()) {
+      params.approvalStatus = this.statusFilter() as
+        | 'PENDING'
+        | 'APPROVED'
+        | 'REJECTED';
+    }
+
     this.merchantService
-      .findAll({
-        page,
-        limit: pageSize,
-        include: 'statistics',
-        approvalStatus: 'APPROVED',
-      })
+      .findAll(params)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
@@ -299,9 +325,22 @@ export class MerchantsComponent implements OnInit {
 
   // Event handlers
   onMenuAction(action: string, merchant: Merchant): void {
-    console.log(`Menu action: ${action}`, merchant);
     this.activeMobileMenuId.set(null);
-    // TODO: Handle menu actions - modify, activate/deactivate, delete
+
+    switch (action) {
+      case 'view':
+        this.onViewMerchant(merchant);
+        break;
+      case 'activate':
+      case 'activation':
+        // Khi cửa hàng đang chờ duyệt, "Kích hoạt" sẽ đồng thời approve
+        if (merchant.approvalStatus === 'PENDING') {
+          this.approveMerchant(merchant);
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -339,6 +378,22 @@ export class MerchantsComponent implements OnInit {
   /** Close add merchant panel */
   closeAddMerchantPanel(): void {
     this.isAddMerchantPanelOpen.set(false);
+  }
+
+  onViewMerchant(merchant: Merchant): void {
+    this.rejectReason.set('');
+    this.selectedMerchant.set(merchant);
+    this.isViewMerchantPanelOpen.set(true);
+  }
+
+  closeViewMerchantPanel(): void {
+    this.rejectReason.set('');
+    this.isViewMerchantPanelOpen.set(false);
+    this.selectedMerchant.set(null);
+  }
+
+  onRejectReasonChange(value: string): void {
+    this.rejectReason.set(value);
   }
 
   /** Reference to the add merchant form component */
@@ -420,5 +475,92 @@ export class MerchantsComponent implements OnInit {
       default:
         console.log('Header action:', event.actionId);
     }
+  }
+
+  approveMerchant(merchant: Merchant): void {
+    this.modalService.showConfirmation(
+      this.translationService.translate('common.status.warning'),
+      this.translationService.translate(
+        'admin.partners.merchants.approveConfirm'
+      ),
+      () => {
+        this.merchantService
+          .updateStatus(merchant.id, 'APPROVED')
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.modalService.showSuccess(
+                this.translationService.translate('common.status.success'),
+                this.translationService.translate(
+                  'admin.partners.merchants.approveSuccess'
+                )
+              );
+              this.loadMerchants();
+            },
+            error: (error) => {
+              console.error('Failed to approve merchant:', error);
+              this.modalService.showError(
+                this.translationService.translate('common.status.error'),
+                this.translationService.translate(
+                  'admin.partners.merchants.approveError'
+                )
+              );
+            },
+          });
+      }
+    );
+  }
+
+  rejectMerchant(merchant: Merchant): void {
+    const reason = this.rejectReason().trim();
+    if (!reason) {
+      this.modalService.showError(
+        this.translationService.translate('common.status.error'),
+        this.translationService.translate(
+          'admin.partners.merchants.rejectReasonRequired'
+        )
+      );
+      return;
+    }
+
+    this.merchantService
+      .updateStatus(merchant.id, 'REJECTED', reason)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.modalService.showSuccess(
+            this.translationService.translate('common.status.success'),
+            this.translationService.translate(
+              'admin.partners.merchants.rejectSuccess'
+            )
+          );
+          this.closeViewMerchantPanel();
+          this.loadMerchants();
+        },
+        error: (error) => {
+          console.error('Failed to reject merchant:', error);
+          this.modalService.showError(
+            this.translationService.translate('common.status.error'),
+            this.translationService.translate(
+              'admin.partners.merchants.rejectError'
+            )
+          );
+        },
+      });
+  }
+
+  onStatisticCardClick(labelKey: string): void {
+    // Click "Tổng số cửa hàng" -> chỉ hiển thị cửa hàng đã duyệt
+    if (labelKey === 'admin.partners.merchants.stats.totalStores') {
+      this.statusFilter.set('APPROVED');
+    }
+
+    // Click "Cửa hàng chờ duyệt" -> lọc theo PENDING
+    if (labelKey === 'admin.partners.merchants.stats.pendingApproval') {
+      this.statusFilter.set('PENDING');
+    }
+
+    this.pagination.update((prev) => ({ ...prev, page: 1 }));
+    this.loadMerchants();
   }
 }

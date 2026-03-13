@@ -1,0 +1,67 @@
+<section class="checkout-page">
+  <header class="checkout-header">
+    <div>
+      <span class="eyebrow">Final step</span>
+      <h1>Checkout</h1>
+      <p>Chốt địa chỉ giao hàng và xác nhận đơn trong một màn hình gọn hơn.</p>
+    </div>
+    <a routerLink="/cart" class="back-link">Back to Cart</a>
+  </header>
+
+  <p *ngIf="!canCheckout()" class="empty">Your cart is empty.</p>
+  <p *ngIf="checkoutError()" class="error-msg">{{ checkoutError() }}</p>
+  <p *ngIf="merchantCount() > 1" class="error-msg">
+    Multi-merchant cart detected. We will split and place {{ merchantCount() }}
+    separate orders automatically.
+  </p>
+
+  <form
+    *ngIf="canCheckout()"
+    [formGroup]="checkoutForm"
+    (ngSubmit)="submitOrder()"
+    class="checkout-grid"
+  >
+    <div class="panel">
+      <h2>Delivery Information</h2>
+      <label for="deliveryAddressNote">Delivery address note</label>
+      <textarea
+        id="deliveryAddressNote"
+        rows="4"
+        formControlName="deliveryAddressNote"
+        placeholder="Tower A, floor 5, call before delivery"
+      ></textarea>
+      <small
+        *ngIf="
+          checkoutForm.get('deliveryAddressNote')?.invalid &&
+          checkoutForm.get('deliveryAddressNote')?.touched
+        "
+      >
+        This field is required.
+      </small>
+    </div>
+
+    <aside class="panel summary">
+      <h2>Order Summary</h2>
+      <article *ngFor="let item of items()" class="sum-item">
+        <span>{{ resolveItemName(item) }} x{{ item.quantity }}</span>
+        <strong
+          >{{ resolveItemTotal(item) | number : '1.0-0' : 'vi-VN' }} VND</strong
+        >
+      </article>
+      <div class="sum-total">
+        <span>Total</span>
+        <strong>{{ totalAmount() | number : '1.0-0' : 'vi-VN' }} VND</strong>
+      </div>
+
+      <button type="submit" [disabled]="isSubmitting()">
+        {{
+          isSubmitting()
+            ? 'Submitting...'
+            : merchantCount() > 1
+            ? 'Place ' + merchantCount() + ' Orders'
+            : 'Place Order'
+        }}
+      </button>
+    </aside>
+  </form>
+</section>

@@ -240,12 +240,45 @@
     "viewMore": "Xem thêm",
     "partnerReg": "Đăng ký đối tác",
     "start": "Bắt đầu",
+    "validation": {
+      "required": "Trường này là bắt buộc"
+    },
     "button": {
       "cancel": "Hủy",
       "submit": "Gửi",
       "confirm": "Xác nhận",
-      "close": "Đóng"
+      "close": "Đóng",
+      "addToCart": "Thêm vào giỏ hàng",
+      "back": "Quay lại"
     }
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng của bạn đang trống.",
+    "total": "Tổng tiền",
+    "checkout": "Tiến hành thanh toán",
+    "multiMerchantWarning": "Giỏ hàng hiện có sản phẩm từ nhiều cửa hàng. Vui lòng đặt hàng từng cửa hàng một."
+  },
+  "store": {
+    "title": "Cửa hàng",
+    "viewCart": "Xem giỏ hàng",
+    "empty": "Chưa có sản phẩm nào đang mở bán.",
+    "notFound": "Không tìm thấy sản phẩm hoặc sản phẩm đã ngừng bán."
+  },
+  "checkout": {
+    "title": "Thanh toán",
+    "backToCart": "Quay lại giỏ hàng",
+    "deliveryInfo": "Thông tin giao hàng",
+    "deliveryAddressNote": "Ghi chú địa chỉ giao hàng",
+    "deliveryAddressPlaceholder": "Ví dụ: Tòa nhà A, tầng 5, gọi trước khi giao...",
+    "orderSummary": "Tóm tắt đơn hàng",
+    "placeOrder": "Đặt đơn",
+    "submitting": "Đang xử lý...",
+    "successTitle": "Đặt hàng thành công",
+    "successMessage": "Đơn hàng của bạn đã được tạo thành công.",
+    "errorTitle": "Đặt hàng thất bại",
+    "errorMessage": "Không thể tạo đơn hàng. Vui lòng thử lại.",
+    "invalidMerchant": "Không thể xác định cửa hàng của giỏ hàng hiện tại."
   },
   "auth": {
     "common": {
@@ -374,6 +407,14 @@
         "question": "Bạn muốn hợp tác kinh doanh với chúng tôi?",
         "detail": "Đăng ký công ty, cung cấp dịch vụ vận tải, logistics và các giải pháp kinh doanh.",
         "note": "Quản lý hợp đồng, theo dõi hiệu suất, nhận thanh toán đúng hạn"
+      },
+      "courier": {
+        "badge": "Courier",
+        "title": "Tài xế giao hàng",
+        "desc": "Đăng ký để trở thành tài xế giao hàng cùng SharkBee.",
+        "question": "Bạn muốn đăng ký làm tài xế giao hàng phải không?",
+        "detail": "Tham gia mạng lưới giao hàng của SharkBee và nhận đơn nhanh chóng.",
+        "note": "Linh hoạt thời gian làm việc, theo dõi thu nhập và hỗ trợ vận hành dễ dàng"
       }
     }
   },
@@ -421,6 +462,27 @@
       "submit": "Gửi thông tin",
       "invalidImageType": "Vui lòng chọn file hình ảnh hợp lệ.",
       "imageTooLarge": "Hình ảnh quá lớn. Vui lòng chọn file nhỏ hơn 5MB."
+    }
+  },
+  "courierSignup": {
+    "formTitle": "Đăng ký tài xế giao hàng",
+    "images": {
+      "heroAlt": "Hình minh họa tài xế SharkBee"
+    },
+    "form": {
+      "fullName": "Họ và tên",
+      "fullNamePlaceholder": "Nhập họ và tên đầy đủ",
+      "fullNameError": "Vui lòng nhập họ và tên.",
+      "phone": "Số điện thoại di động",
+      "phonePlaceholder": "Số dùng để nhận OTP",
+      "phoneError": "Vui lòng nhập số điện thoại hợp lệ.",
+      "email": "Thư điện tử",
+      "emailPlaceholder": "you@example.com",
+      "emailError": "Vui lòng nhập email hợp lệ.",
+      "vehicleType": "Loại phương tiện",
+      "vehicleTypePlaceholder": "Ví dụ: Xe máy, Xe van",
+      "vehicleTypeError": "Vui lòng nhập loại phương tiện.",
+      "submit": "Gửi thông tin"
     }
   }
 }

@@ -52,6 +52,14 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'courier-signup',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./pages/courier-signup/courier-signup.component').then(
+            (m) => m.CourierSignupComponent
+          ),
+      },
+      {
         path: 'register-type',
         loadComponent: () =>
           import('./pages/register-type/register-type.component').then(

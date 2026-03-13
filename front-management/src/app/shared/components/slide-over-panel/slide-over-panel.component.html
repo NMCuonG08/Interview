@@ -1,27 +1,26 @@
 @if (isOpen()) {
-<!-- Backdrop -->
-@if (mergedConfig().showBackdrop) {
 <div
-  class="fixed inset-0 bg-black/50 z-[110] transition-opacity duration-300"
-  [class.opacity-100]="isAnimating()"
-  [class.opacity-0]="!isAnimating()"
+  class="fixed inset-0 z-[120] flex justify-end"
   (click)="onBackdropClick()"
-  aria-hidden="true"
-></div>
-}
-
-<!-- Panel -->
-<div
-  class="fixed inset-y-0 right-0 z-[120] flex"
   role="dialog"
   aria-modal="true"
   [attr.aria-labelledby]="'slide-over-title'"
 >
+  @if (mergedConfig().showBackdrop) {
   <div
-    class="relative bg-surface-base shadow-2xl flex flex-col transition-transform duration-300 ease-out"
+    class="absolute inset-0 bg-black/50 transition-opacity duration-300"
+    [class.opacity-100]="isAnimating()"
+    [class.opacity-0]="!isAnimating()"
+    aria-hidden="true"
+  ></div>
+  }
+
+  <div
+    class="relative z-[1] bg-surface-base shadow-2xl flex flex-col transition-transform duration-300 ease-out"
     [class.translate-x-0]="isAnimating()"
     [class.translate-x-full]="!isAnimating()"
     [ngClass]="widthClass()"
+    (click)="$event.stopPropagation()"
   >
     <!-- Header -->
     @if (mergedConfig().showHeader) {

@@ -1,0 +1,154 @@
+<div class="space-y-6 max-w-xl">
+  <h2 class="text-lg font-semibold">
+    @if (isEditMode()) {
+    {{ 'admin.products.editTitle' | translate }}
+    } @else {
+    {{ 'admin.products.createTitle' | translate }}
+    }
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        {{ 'admin.products.form.name' | translate }}
+        <span class="text-primary">*</span>
+      </label>
+      <input
+        type="text"
+        class="w-full"
+        formControlName="name"
+        [class.border-red-500]="
+          form.get('name')?.invalid && form.get('name')?.touched
+        "
+      />
+      @if (form.get('name')?.hasError('required') && form.get('name')?.touched)
+      {
+      <p class="mt-1 text-xs text-red-600">
+        {{ 'common.validation.required' | translate }}
+      </p>
+      } @if ( form.get('name')?.hasError('minlength') &&
+      form.get('name')?.touched ) {
+      <p class="mt-1 text-xs text-red-600">
+        {{ 'common.validation.minLength' | translate }}
+      </p>
+      }
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        {{ 'admin.products.form.description' | translate }}
+      </label>
+      <textarea
+        rows="3"
+        class="w-full"
+        formControlName="description"
+      ></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          {{ 'admin.products.form.price' | translate }}
+          <span class="text-primary">*</span>
+        </label>
+        <input
+          type="number"
+          step="0.01"
+          class="w-full"
+          formControlName="price"
+        />
+        @if ( form.get('price')?.hasError('required') &&
+        form.get('price')?.touched ) {
+        <p class="mt-1 text-xs text-red-600">
+          {{ 'common.validation.required' | translate }}
+        </p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          {{ 'admin.products.form.category' | translate }}
+          <span class="text-primary">*</span>
+        </label>
+        <select class="w-full" formControlName="categoryId">
+          <option value="">
+            {{ 'admin.products.form.selectCategory' | translate }}
+          </option>
+          <option
+            *ngFor="let category of categories()"
+            [value]="category.externalId"
+          >
+            {{ resolveCategoryName(category) }}
+          </option>
+        </select>
+        @if ( form.get('categoryId')?.hasError('required') &&
+        form.get('categoryId')?.touched ) {
+        <p class="mt-1 text-xs text-red-600">
+          {{ 'common.validation.required' | translate }}
+        </p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          {{ 'admin.products.form.stock' | translate }}
+        </label>
+        <input type="number" class="w-full" formControlName="stock" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          {{ 'admin.products.form.sku' | translate }}
+        </label>
+        <input type="text" class="w-full" formControlName="sku" />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="isActive"
+          formControlName="isActive"
+          class="h-4 w-4"
+        />
+        <label for="isActive" class="text-sm">
+          {{ 'admin.products.form.isActive' | translate }}
+        </label>
+      </div>
+    </div>
+
+    @if (!isEditMode()) {
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        {{ 'admin.products.form.images' | translate }}
+      </label>
+      <input type="file" multiple (change)="onImageSelect($event)" />
+      <p class="text-xs text-text-tertiary mt-1">
+        {{ 'admin.products.form.imagesHelp' | translate }}
+      </p>
+    </div>
+    }
+
+    <div class="pt-4 flex gap-3">
+      <button
+        type="submit"
+        class="px-4 py-2 rounded bg-primary text-white"
+        [disabled]="isSubmitting()"
+      >
+        @if (isEditMode()) {
+        {{ 'admin.products.form.update' | translate }}
+        } @else {
+        {{ 'admin.products.form.create' | translate }}
+        }
+      </button>
+      <button
+        type="button"
+        class="px-4 py-2 rounded border"
+        (click)="onCancel()"
+      >
+        {{ 'common.button.cancel' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

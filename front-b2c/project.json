@@ -4,22 +4,15 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "front-b2c/src",
-  "tags": [
-    "type:app",
-    "scope:b2c"
-  ],
+  "tags": ["type:app", "scope:b2c"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/front-b2c",
         "browser": "front-b2c/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "front-b2c/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -28,9 +21,7 @@
             "input": "front-b2c/public"
           }
         ],
-        "styles": [
-          "front-b2c/src/styles.scss"
-        ]
+        "styles": ["front-b2c/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -61,10 +52,12 @@
       "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "front-b2c:build:production"
+          "buildTarget": "front-b2c:build:production",
+          "proxyConfig": "front-b2c/proxy.conf.json"
         },
         "development": {
-          "buildTarget": "front-b2c:build:development"
+          "buildTarget": "front-b2c:build:development",
+          "proxyConfig": "front-b2c/proxy.conf.json"
         }
       },
       "defaultConfiguration": "development"
@@ -80,9 +73,7 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": [
-        "{options.reportsDirectory}"
-      ],
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
         "reportsDirectory": "../coverage/front-b2c"
       }

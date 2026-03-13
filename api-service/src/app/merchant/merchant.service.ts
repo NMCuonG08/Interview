@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateMerchantDto } from './dto/create-merchant.dto';
@@ -29,6 +30,7 @@ import { ApprovalStatus } from '@prisma/client';
 import { OperationalStatus } from '@prisma/client';
 import { MerchantEntity } from './entities/merchant.entity';
 import { MerchantQueryBuilder } from './builders/merchant-query.builder';
+import { UpdateMerchantStatusDto } from './dto/update-merchant-status.dto';
 
 @Injectable()
 export class MerchantService {
@@ -128,6 +130,63 @@ export class MerchantService {
     return response;
   }
 
+  async findMine(userId: number): Promise<MerchantEntity> {
+    const merchant = await this.prisma.merchant.findFirst({
+      where: {
+        ownerId: userId,
+      },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        agency: {
+          select: {
+            name: true,
+            externalId: true,
+            phone: true,
+          },
+        },
+        brand: {
+          select: {
+            name: true,
+            externalId: true,
+            slug: true,
+          },
+        },
+        owner: {
+          select: {
+            email: true,
+            phone: true,
+            username: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        _count: {
+          select: {
+            products: true,
+            orders: true,
+          },
+        },
+      },
+    });
+
+    if (!merchant) {
+      throw new NotFoundException(
+        RESOURCE_MESSAGES.NOT_FOUND(RESOURCE_TARGETS.MERCHANT)
+      );
+    }
+
+    return new MerchantEntity(merchant, {
+      agency: merchant.agency,
+      brand: merchant.brand,
+      owner: merchant.owner,
+      tags: merchant.tags,
+      _count: merchant._count,
+    });
+  }
+
   private async getStatistics(): Promise<MerchantStatistics> {
     const [totalApproved, totalPending, totalActive] =
       await this.prisma.$transaction([
@@ -151,6 +210,40 @@ export class MerchantService {
   async findByExternalId(externalId: string) {
     const merchant = await this.prisma.merchant.findUnique({
       where: { externalId },
+      include: {
+        agency: {
+          select: {
+            name: true,
+            externalId: true,
+            phone: true,
+          },
+        },
+        brand: {
+          select: {
+            name: true,
+            externalId: true,
+            slug: true,
+          },
+        },
+        owner: {
+          select: {
+            email: true,
+            phone: true,
+            username: true,
+          },
+        },
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        _count: {
+          select: {
+            products: true,
+            orders: true,
+          },
+        },
+      },
     });
 
     if (!merchant) {
@@ -159,10 +252,20 @@ export class MerchantService {
       );
     }
 
-    return merchant;
+    return new MerchantEntity(merchant, {
+      agency: merchant.agency,
+      brand: merchant.brand,
+      owner: merchant.owner,
+      tags: merchant.tags,
+      _count: merchant._count,
+    });
   }
 
-  async updateStatus(externalId: string, status: MERCHANT_STATUS) {
+  async updateStatus(
+    externalId: string,
+    dto: UpdateMerchantStatusDto,
+    actorUserId: number
+  ) {
     const merchant = await this.prisma.merchant.findUnique({
       where: { externalId },
     });
@@ -173,13 +276,43 @@ export class MerchantService {
       );
     }
 
+    if (
+      dto.status === MERCHANT_STATUS.REJECTED &&
+      !dto.rejectionReason?.trim()
+    ) {
+      throw new BadRequestException('Rejection reason is required');
+    }
+
+    const statusData =
+      dto.status === MERCHANT_STATUS.APPROVED
+        ? {
+            approvalStatus: dto.status as ApprovalStatus,
+            approvedAt: new Date(),
+            approvedBy: actorUserId,
+            rejectedAt: null,
+            rejectedBy: null,
+            rejectionReason: null,
+          }
+        : dto.status === MERCHANT_STATUS.REJECTED
+        ? {
+            approvalStatus: dto.status as ApprovalStatus,
+            approvedAt: null,
+            approvedBy: null,
+            rejectedAt: new Date(),
+            rejectedBy: actorUserId,
+            rejectionReason: dto.rejectionReason?.trim() ?? null,
+          }
+        : {
+            approvalStatus: dto.status as ApprovalStatus,
+          };
+
     const updatedMerchant = await this.prisma.merchant.update({
       where: { externalId },
-      data: { approvalStatus: status as ApprovalStatus },
+      data: statusData,
     });
 
     // If status is APPROVED, assign MERCHANT_OWNER role and link merchantId
-    if (status === MERCHANT_STATUS.APPROVED) {
+    if (dto.status === MERCHANT_STATUS.APPROVED) {
       const merchantOwnerRole = await this.prisma.role.findUnique({
         where: { name: ROLE.MERCHANT_OWNER },
       });

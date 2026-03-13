@@ -1,1 +1,1 @@
-export type RegistrationType = 'merchant' | 'partner';
+export type RegistrationType = 'merchant' | 'partner' | 'courier';

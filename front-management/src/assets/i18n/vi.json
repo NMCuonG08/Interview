@@ -37,10 +37,12 @@
       "delete": "Xóa",
       "continue": "Tiếp tục",
       "view": "Xem chi tiết",
-      "edit": "Chỉnh sửa"
+      "edit": "Chỉnh sửa",
+      "close": "Đóng"
     },
     "loading": "Đang tải...",
     "noData": "Không có dữ liệu",
+    "noResults": "Không tìm thấy kết quả",
     "actions": "Thao tác",
     "selectAll": "Chọn tất cả",
     "selectRow": "Chọn dòng",
@@ -57,6 +59,7 @@
     "status": {
       "success": "Thành công",
       "error": "Lỗi",
+      "warning": "Cảnh báo",
       "active": "Hoạt động",
       "inactive": "Ngừng hoạt động",
       "pending": "Chờ duyệt",
@@ -144,6 +147,76 @@
       "comingSoon": "Tính năng đang phát triển",
       "filter": "Lọc"
     },
+    "products": {
+      "title": "Sản phẩm",
+      "addNew": "Thêm sản phẩm",
+      "selectMerchant": "Chọn cửa hàng",
+      "createTitle": "Tạo sản phẩm mới",
+      "editTitle": "Chỉnh sửa sản phẩm",
+      "createSuccess": "Tạo sản phẩm thành công.",
+      "createError": "Không thể tạo sản phẩm. Vui lòng thử lại.",
+      "formInvalid": "Vui lòng nhập đầy đủ các trường bắt buộc trước khi tạo sản phẩm.",
+      "updateSuccess": "Cập nhật sản phẩm thành công.",
+      "updateError": "Không thể cập nhật sản phẩm. Vui lòng thử lại.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+      "deleteSuccess": "Xóa sản phẩm thành công.",
+      "deleteError": "Không thể xóa sản phẩm. Vui lòng thử lại.",
+      "loadError": "Không thể tải danh sách sản phẩm. Vui lòng thử lại.",
+      "merchantRequired": "Vui lòng chọn cửa hàng trước khi tạo sản phẩm.",
+      "table": {
+        "name": "TÊN SẢN PHẨM",
+        "price": "GIÁ",
+        "sku": "SKU",
+        "stock": "TỒN KHO",
+        "status": "TRẠNG THÁI"
+      },
+      "form": {
+        "name": "Tên sản phẩm",
+        "description": "Mô tả",
+        "price": "Giá",
+        "category": "Danh mục",
+        "selectCategory": "Chọn danh mục",
+        "stock": "Tồn kho",
+        "sku": "SKU",
+        "isActive": "Đang hoạt động",
+        "images": "Hình ảnh sản phẩm",
+        "imagesHelp": "Bạn có thể chọn nhiều ảnh cùng lúc.",
+        "create": "Tạo sản phẩm",
+        "update": "Cập nhật"
+      }
+    },
+    "users": {
+      "couriers": {
+        "pendingTitle": "Danh sách tài xế",
+        "searchPlaceholder": "Tìm kiếm theo tên hoặc số điện thoại...",
+        "approveConfirm": "Bạn có chắc chắn muốn duyệt tài xế này không?",
+        "approveSuccess": "Duyệt tài xế thành công.",
+        "approveError": "Không thể duyệt tài xế. Vui lòng thử lại.",
+        "rejectReasonRequired": "Vui lòng nhập lý do từ chối.",
+        "rejectSuccess": "Từ chối tài xế thành công.",
+        "rejectError": "Không thể từ chối tài xế. Vui lòng thử lại.",
+        "filters": {
+          "pending": "Chờ duyệt",
+          "approved": "Đã duyệt",
+          "rejected": "Từ chối",
+          "from": "Từ ngày",
+          "to": "Đến ngày",
+          "apply": "Áp dụng",
+          "clear": "Xóa lọc"
+        },
+        "actions": {
+          "approve": "Duyệt",
+          "reject": "Từ chối"
+        },
+        "rejectModal": {
+          "title": "Từ chối tài xế",
+          "description": "Vui lòng nhập lý do từ chối.",
+          "reasonPlaceholder": "Nhập lý do...",
+          "confirm": "Xác nhận từ chối",
+          "cancel": "Hủy"
+        }
+      }
+    },
     "partners": {
       "tabs": {
         "agencies": "Đối tác",
@@ -188,6 +261,18 @@
         "searchPlaceholder": "Tìm kiếm cửa hàng...",
         "createSuccess": "Tạo cửa hàng thành công!",
         "createError": "Không thể tạo cửa hàng. Vui lòng thử lại.",
+        "approveConfirm": "Bạn có chắc chắn muốn duyệt cửa hàng này không?",
+        "approveSuccess": "Duyệt cửa hàng thành công.",
+        "approveError": "Không thể duyệt cửa hàng. Vui lòng thử lại.",
+        "rejectReasonRequired": "Vui lòng nhập lý do từ chối cửa hàng.",
+        "rejectSuccess": "Từ chối cửa hàng thành công.",
+        "rejectError": "Không thể từ chối cửa hàng. Vui lòng thử lại.",
+        "rejectionReasonLabel": "Lý do từ chối",
+        "rejectionReasonPlaceholder": "Nhập lý do từ chối...",
+        "actions": {
+          "approve": "Duyệt",
+          "reject": "Từ chối"
+        },
         "stats": {
           "totalStores": "Tổng số cửa hàng",
           "pendingApproval": "Cửa hàng chờ duyệt",
@@ -302,6 +387,41 @@
         "activation": "Kích hoạt",
         "deactivation": "Tạm ngừng",
         "delete": "Xóa"
+      },
+      "products": {
+        "title": "Sản phẩm",
+        "addNew": "Thêm sản phẩm",
+        "selectMerchant": "Chọn cửa hàng",
+        "createTitle": "Tạo sản phẩm mới",
+        "editTitle": "Chỉnh sửa sản phẩm",
+        "createSuccess": "Tạo sản phẩm thành công.",
+        "createError": "Không thể tạo sản phẩm. Vui lòng thử lại.",
+        "updateSuccess": "Cập nhật sản phẩm thành công.",
+        "updateError": "Không thể cập nhật sản phẩm. Vui lòng thử lại.",
+        "deleteConfirm": "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+        "deleteSuccess": "Xóa sản phẩm thành công.",
+        "deleteError": "Không thể xóa sản phẩm. Vui lòng thử lại.",
+        "loadError": "Không thể tải danh sách sản phẩm. Vui lòng thử lại.",
+        "merchantRequired": "Vui lòng chọn cửa hàng trước khi tạo sản phẩm.",
+        "table": {
+          "name": "TÊN SẢN PHẨM",
+          "price": "GIÁ",
+          "sku": "SKU",
+          "stock": "TỒN KHO",
+          "status": "TRẠNG THÁI"
+        },
+        "form": {
+          "name": "Tên sản phẩm",
+          "description": "Mô tả",
+          "price": "Giá",
+          "stock": "Tồn kho",
+          "sku": "SKU",
+          "isActive": "Đang hoạt động",
+          "images": "Hình ảnh sản phẩm",
+          "imagesHelp": "Bạn có thể chọn nhiều ảnh cùng lúc.",
+          "create": "Tạo sản phẩm",
+          "update": "Cập nhật"
+        }
       }
     },
     "categories": {

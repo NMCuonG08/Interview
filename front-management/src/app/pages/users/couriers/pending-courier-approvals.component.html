@@ -1,0 +1,163 @@
+<div class="flex flex-col gap-4">
+  <!-- Filters -->
+  <div
+    class="flex flex-col gap-3 rounded-xl bg-surface-base p-4 ring-1 ring-border-base"
+  >
+    <div class="flex flex-wrap gap-2">
+      <button
+        class="px-3 py-2 rounded-lg text-sm font-semibold ring-1 ring-border-base"
+        [class.bg-primary]="statusFilter() === 'PENDING'"
+        [class.text-content-on-secondary]="statusFilter() === 'PENDING'"
+        (click)="setStatus('PENDING')"
+      >
+        {{ 'admin.users.couriers.filters.pending' | translate }}
+      </button>
+      <button
+        class="px-3 py-2 rounded-lg text-sm font-semibold ring-1 ring-border-base"
+        [class.bg-primary]="statusFilter() === 'APPROVED'"
+        [class.text-content-on-secondary]="statusFilter() === 'APPROVED'"
+        (click)="setStatus('APPROVED')"
+      >
+        {{ 'admin.users.couriers.filters.approved' | translate }}
+      </button>
+      <button
+        class="px-3 py-2 rounded-lg text-sm font-semibold ring-1 ring-border-base"
+        [class.bg-primary]="statusFilter() === 'REJECTED'"
+        [class.text-content-on-secondary]="statusFilter() === 'REJECTED'"
+        (click)="setStatus('REJECTED')"
+      >
+        {{ 'admin.users.couriers.filters.rejected' | translate }}
+      </button>
+    </div>
+
+    <div class="flex flex-wrap gap-3 items-end">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-text-secondary">{{
+          'admin.users.couriers.filters.from' | translate
+        }}</label>
+        <input
+          class="h-10 rounded-lg bg-surface-base px-3 ring-1 ring-border-base"
+          type="date"
+          [ngModel]="startDate()"
+          (ngModelChange)="startDate.set($event)"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-text-secondary">{{
+          'admin.users.couriers.filters.to' | translate
+        }}</label>
+        <input
+          class="h-10 rounded-lg bg-surface-base px-3 ring-1 ring-border-base"
+          type="date"
+          [ngModel]="endDate()"
+          (ngModelChange)="endDate.set($event)"
+        />
+      </div>
+      <div class="flex gap-2">
+        <button
+          class="h-10 px-3 rounded-lg bg-primary text-content-on-secondary font-semibold"
+          (click)="applyDateFilter()"
+        >
+          {{ 'admin.users.couriers.filters.apply' | translate }}
+        </button>
+        <button
+          class="h-10 px-3 rounded-lg ring-1 ring-border-base font-semibold"
+          (click)="clearDateFilter()"
+        >
+          {{ 'admin.users.couriers.filters.clear' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-data-table
+    [config]="tableConfig"
+    [data]="tableData()"
+    [pagination]="pagination()"
+    [loading]="isLoading()"
+    [headerConfig]="tableHeaderConfig"
+    (pageChange)="onPageChange($event)"
+    (headerSearch)="onHeaderSearch($event)"
+  >
+    <ng-template appTableCell="rowActions" let-row>
+      <div class="flex gap-2 justify-end">
+        <button
+          class="h-9 px-3 rounded-lg bg-status-success text-white font-semibold disabled:opacity-50"
+          (click)="approve(row)"
+          [disabled]="row.approvalStatus !== 'PENDING'"
+        >
+          {{ 'admin.users.couriers.actions.approve' | translate }}
+        </button>
+        <button
+          class="h-9 px-3 rounded-lg bg-status-error text-white font-semibold disabled:opacity-50"
+          (click)="openReject(row)"
+          [disabled]="row.approvalStatus !== 'PENDING'"
+        >
+          {{ 'admin.users.couriers.actions.reject' | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </app-data-table>
+</div>
+
+<!-- Reject Modal (local, with reason input) -->
+<div
+  class="fixed inset-0 z-[110] flex items-center justify-center p-4"
+  *ngIf="isRejectModalOpen()"
+>
+  <div
+    class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm"
+    (click)="closeReject()"
+  ></div>
+  <div
+    class="relative w-full max-w-lg rounded-2xl bg-surface-base p-6 shadow-2xl ring-1 ring-border-base"
+  >
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h3 class="text-lg font-semibold text-text-primary">
+          {{ 'admin.users.couriers.rejectModal.title' | translate }}
+        </h3>
+        <p class="mt-1 text-sm text-text-secondary">
+          {{ 'admin.users.couriers.rejectModal.description' | translate }}
+        </p>
+      </div>
+      <button
+        class="rounded-full p-1 text-text-tertiary hover:bg-surface-muted hover:text-text-secondary"
+        (click)="closeReject()"
+        [disabled]="isRejecting()"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="mt-4">
+      <textarea
+        class="w-full min-h-[120px] rounded-xl bg-surface-base p-3 ring-1 ring-border-base"
+        [placeholder]="
+          'admin.users.couriers.rejectModal.reasonPlaceholder' | translate
+        "
+        [ngModel]="rejectReason()"
+        (ngModelChange)="rejectReason.set($event)"
+        [disabled]="isRejecting()"
+      ></textarea>
+    </div>
+
+    <div class="mt-6 flex flex-row-reverse gap-2">
+      <button
+        class="h-10 px-4 rounded-lg bg-status-error text-white font-semibold disabled:opacity-50"
+        (click)="confirmReject()"
+        [disabled]="isRejecting()"
+      >
+        {{ 'admin.users.couriers.rejectModal.confirm' | translate }}
+      </button>
+      <button
+        class="h-10 px-4 rounded-lg ring-1 ring-border-base font-semibold disabled:opacity-50"
+        (click)="closeReject()"
+        [disabled]="isRejecting()"
+      >
+        {{ 'admin.users.couriers.rejectModal.cancel' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

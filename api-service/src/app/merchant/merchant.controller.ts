@@ -18,6 +18,7 @@ import { UpdateMerchantStatusDto } from './dto/update-merchant-status.dto';
 import { PermissionsGuard } from '../common/guards/permissions.guard';
 import { Permissions } from '../common/decorators/permissions.decorator';
 import { MerchantQueryDto } from './dto/merchant-query.dto';
+import { AuthenticatedRequest } from '../common/interfaces/auth.interface';
 
 @Controller('merchants')
 export class MerchantController {
@@ -40,6 +41,12 @@ export class MerchantController {
     return this.merchantService.findAll(query);
   }
 
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  findMine(@Request() req: AuthenticatedRequest) {
+    return this.merchantService.findMine(req.user.userId);
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions('merchant:read')
@@ -52,9 +59,10 @@ export class MerchantController {
   @Permissions('merchant:update_status')
   updateStatus(
     @Param('id') externalId: string,
-    @Body() dto: UpdateMerchantStatusDto
+    @Body() dto: UpdateMerchantStatusDto,
+    @Request() req: AuthenticatedRequest
   ) {
-    return this.merchantService.updateStatus(externalId, dto.status);
+    return this.merchantService.updateStatus(externalId, dto, req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)

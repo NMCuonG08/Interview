@@ -6,12 +6,22 @@ import { AUTH_MESSAGES } from '../common/constants/messages.constant';
 
 @Injectable()
 export class OtpService {
-  constructor(
-    private prisma: PrismaService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async requestOtp(dto: RequestOtpDto) {
+    // Rate limit: max 3 OTP requests per phone per 15 minutes
+    const windowMs = 15 * 60 * 1000;
+    const windowStart = new Date(Date.now() - windowMs);
+    const recentCount = await this.prisma.otpVerification.count({
+      where: {
+        phone: dto.phone,
+        createdAt: { gte: windowStart },
+      },
+    });
+    if (recentCount >= 3) {
+      throw new BadRequestException(AUTH_MESSAGES.OTP_RATE_LIMIT_EXCEEDED);
+    }
+
     // Generate 6 digit code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes

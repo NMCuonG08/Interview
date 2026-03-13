@@ -1,0 +1,145 @@
+:host {
+  display: block;
+}
+
+.checkout-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.55rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.checkout-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.checkout-header p {
+  margin: 0.55rem 0 0;
+  color: #64748b;
+}
+
+.back-link {
+  display: inline-flex;
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
+  background: #fff;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+}
+
+.checkout-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .checkout-grid {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+.panel {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 1.4rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 12rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 1rem;
+  resize: vertical;
+}
+
+small {
+  color: #dc2626;
+}
+
+.sum-item,
+.sum-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.sum-total {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+}
+
+button {
+  width: 100%;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: #fff;
+  padding: 0.95rem 1rem;
+  cursor: pointer;
+}
+
+.empty {
+  color: #6b7280;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.error-msg {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+}
+
+@media (max-width: 860px) {
+  .checkout-page {
+    padding: 1rem;
+  }
+
+  .checkout-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

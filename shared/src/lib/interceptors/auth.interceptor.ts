@@ -52,7 +52,7 @@ const handle401Error = (req: HttpRequest<unknown>, next: HttpHandlerFn, authServ
       }),
       catchError((err) => {
         isRefreshing = false;
-        authService.logout();
+        authService.logout(); // here
         return throwError(() => err);
       })
     );

@@ -11,4 +11,5 @@ export type NavItem = {
   readonly children?: readonly NavItem[];
   readonly permission?: NavPermission;
   readonly anyPermissions?: readonly NavPermission[];
+  readonly hiddenForRoles?: readonly string[];
 };

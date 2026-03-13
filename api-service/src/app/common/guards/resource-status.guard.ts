@@ -16,6 +16,7 @@ import {
   ResourceTarget,
 } from '../constants/resource.constant';
 import { RESOURCE_MESSAGES } from '../constants/messages.constant';
+import { ROLE } from '../constants/role.constants';
 
 @Injectable()
 export class ResourceStatusGuard implements CanActivate {
@@ -35,6 +36,14 @@ export class ResourceStatusGuard implements CanActivate {
     const id = this.extractIdentifier(request, target);
 
     if (!id) {
+      if (target === RESOURCE_TARGETS.MERCHANT && request.user?.userId) {
+        const boundMerchantId = await this.resolveMerchantIdByUser(
+          request.user.userId
+        );
+        if (boundMerchantId) {
+          await this.validateStatus(target, boundMerchantId);
+        }
+      }
       return true;
     }
 
@@ -83,5 +92,31 @@ export class ResourceStatusGuard implements CanActivate {
         RESOURCE_MESSAGES.OPERATION_DENIED(target, entity.approvalStatus)
       );
     }
+  }
+
+  private async resolveMerchantIdByUser(
+    userId: number
+  ): Promise<number | null> {
+    const scopedMerchantRole = await this.prisma.userRole.findFirst({
+      where: {
+        userId,
+        merchantId: { not: null },
+        role: { name: ROLE.MERCHANT_OWNER },
+      },
+      select: { merchantId: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (scopedMerchantRole?.merchantId) {
+      return scopedMerchantRole.merchantId;
+    }
+
+    const merchant = await this.prisma.merchant.findFirst({
+      where: { ownerId: userId },
+      select: { id: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return merchant?.id ?? null;
   }
 }

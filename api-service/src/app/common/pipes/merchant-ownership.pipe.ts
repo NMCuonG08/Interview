@@ -14,7 +14,6 @@ import {
   PRODUCT_MESSAGES,
   COMMON_MESSAGES,
 } from '../constants/messages.constant';
-import { PRIMITIVE_TYPES } from '../constants/common.constant';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MerchantOwnershipPipe implements PipeTransform {
@@ -36,39 +35,29 @@ export class MerchantOwnershipPipe implements PipeTransform {
       throw new ForbiddenException(COMMON_MESSAGES.USER_NOT_FOUND_IN_CONTEXT);
     }
 
-    let internalMerchantId: number;
+    const inputId = value.merchantId ?? this.request.query?.merchantId;
+    const isMerchantOwner =
+      Array.isArray(user.roles) && user.roles.includes(ROLE.MERCHANT_OWNER);
 
-    let inputId = value.merchantId;
+    // Merchant owner requests are always scoped to the merchant bound to the authenticated user.
+    if (isMerchantOwner) {
+      const boundMerchantId = await this.resolveMerchantIdByUser(user.userId);
 
-    // Fallback to Query Param if not in Body
-    if (!inputId && this.request.query?.merchantId) {
-      inputId = this.request.query.merchantId;
+      if (!boundMerchantId) {
+        throw new ForbiddenException(
+          PRODUCT_MESSAGES.PERMISSION_DENIED_CREATION
+        );
+      }
+
+      value.merchantId = boundMerchantId;
+      return value;
     }
 
     if (!inputId) {
       throw new BadRequestException(COMMON_MESSAGES.MERCHANT_ID_REQUIRED);
     }
 
-    // 2. Handle provided merchantId
-    const isUuid =
-      typeof inputId === PRIMITIVE_TYPES.STRING && inputId.length > 20;
-
-    if (isUuid) {
-      const merchant = await this.prisma.merchant.findUnique({
-        where: { externalId: inputId },
-      });
-      if (!merchant) {
-        throw new BadRequestException(COMMON_MESSAGES.INVALID_MERCHANT_ID);
-      }
-      internalMerchantId = merchant.id;
-    } else {
-      internalMerchantId = Number(inputId);
-      if (isNaN(internalMerchantId)) {
-        throw new BadRequestException(
-          COMMON_MESSAGES.INVALID_MERCHANT_ID_FORMAT
-        );
-      }
-    }
+    const internalMerchantId = await this.parseMerchantId(inputId);
 
     const hasPermission = await this.validatePermission(
       user.userId,
@@ -109,5 +98,50 @@ export class MerchantOwnershipPipe implements PipeTransform {
     }
 
     return false;
+  }
+
+  private async parseMerchantId(inputId: string | number): Promise<number> {
+    if (typeof inputId === 'string' && inputId.length > 20) {
+      const merchant = await this.prisma.merchant.findUnique({
+        where: { externalId: inputId },
+      });
+      if (!merchant) {
+        throw new BadRequestException(COMMON_MESSAGES.INVALID_MERCHANT_ID);
+      }
+      return merchant.id;
+    }
+
+    const internalMerchantId = Number(inputId);
+    if (isNaN(internalMerchantId)) {
+      throw new BadRequestException(COMMON_MESSAGES.INVALID_MERCHANT_ID_FORMAT);
+    }
+
+    return internalMerchantId;
+  }
+
+  private async resolveMerchantIdByUser(
+    userId: number
+  ): Promise<number | null> {
+    const userRole = await this.prisma.userRole.findFirst({
+      where: {
+        userId,
+        merchantId: { not: null },
+        role: { name: ROLE.MERCHANT_OWNER },
+      },
+      select: { merchantId: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (userRole?.merchantId) {
+      return userRole.merchantId;
+    }
+
+    const merchant = await this.prisma.merchant.findFirst({
+      where: { ownerId: userId },
+      select: { id: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return merchant?.id ?? null;
   }
 }

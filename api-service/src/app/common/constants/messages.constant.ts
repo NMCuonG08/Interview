@@ -14,6 +14,7 @@ export const AUTH_MESSAGES = {
   INVALID_OR_EXPIRED_OTP: 'Invalid or expired OTP',
   OTP_VERIFIED_SUCCESSFULLY: 'OTP verified successfully',
   OTP_SENT_SUCCESSFULLY: 'OTP sent successfully',
+  OTP_RATE_LIMIT_EXCEEDED: 'Too many OTP requests. Please try again later.',
   INVALID_OR_EXPIRED_VERIFICATION_TOKEN:
     'Invalid or expired verification token',
   INVALID_TOKEN_TYPE: 'Invalid token type',

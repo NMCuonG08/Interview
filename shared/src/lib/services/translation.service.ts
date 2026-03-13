@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
@@ -28,6 +29,7 @@ function isSupportedLanguage(value: unknown): value is SupportedLanguage {
 })
 export class TranslationService {
   private readonly http = inject(HttpClient);
+  private readonly document = inject(DOCUMENT);
   private readonly currentLang = signal<SupportedLanguage>(
     this.getStoredLanguage()
   );
@@ -71,11 +73,19 @@ export class TranslationService {
   }
 
   private loadTranslations(lang: string): void {
+    const translationUrl = new URL(
+      `assets/i18n/${lang}.json`,
+      this.document.baseURI
+    ).toString();
+
     this.http
-      .get<Record<string, unknown>>(`assets/i18n/${lang}.json`)
+      .get<Record<string, unknown>>(translationUrl)
       .pipe(
         catchError((err) => {
-          console.error(`Could not load translations for ${lang}`, err);
+          console.error(
+            `Could not load translations for ${lang} from ${translationUrl}`,
+            err
+          );
           return of({});
         })
       )

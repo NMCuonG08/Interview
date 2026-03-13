@@ -56,6 +56,15 @@ export class MerchantService {
   }
 
   /**
+   * Get current authenticated user's owned merchant.
+   */
+  findMine(): Observable<MerchantApiResponse> {
+    return this.http.get<MerchantApiResponse>(`${this.baseUrl}/me`, {
+      withCredentials: true,
+    });
+  }
+
+  /**
    * Request OTP for phone verification
    */
   requestOtp(phone: string): Observable<RequestOtpResponse> {
@@ -96,6 +105,21 @@ export class MerchantService {
     return this.http.post<MerchantResponse>(
       `${this.baseUrl}/admin-create`,
       payload,
+      { withCredentials: true }
+    );
+  }
+
+  /**
+   * Update merchant approval status (PENDING / APPROVED / REJECTED)
+   */
+  updateStatus(
+    externalId: string,
+    status: 'PENDING' | 'APPROVED' | 'REJECTED',
+    rejectionReason?: string
+  ): Observable<MerchantResponse> {
+    return this.http.patch<MerchantResponse>(
+      `${this.baseUrl}/${externalId}/status`,
+      { status, rejectionReason },
       { withCredentials: true }
     );
   }

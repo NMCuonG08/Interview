@@ -1,0 +1,31 @@
+<div class="space-y-4">
+  <div
+    class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+  >
+    <h2 class="text-lg font-semibold">
+      {{ 'admin.products.title' | translate }}
+    </h2>
+
+    <app-custom-select
+      *ngIf="canManageAllMerchants()"
+      [options]="merchantOptions()"
+      [placeholder]="'admin.products.selectMerchant' | translate"
+      [ngModel]="selectedMerchantId()"
+      (ngModelChange)="onMerchantChange($event)"
+      name="merchant"
+      class="w-full md:w-64"
+    ></app-custom-select>
+  </div>
+
+  <app-data-table
+    [config]="tableConfig"
+    [data]="tableData()"
+    [pagination]="pagination()"
+    [loading]="isLoading()"
+    [headerConfig]="tableHeaderConfig"
+    (pageChange)="onPageChange($event)"
+    (actionClick)="onAction($event)"
+    (headerAction)="onHeaderAction($event.actionId)"
+  >
+  </app-data-table>
+</div>

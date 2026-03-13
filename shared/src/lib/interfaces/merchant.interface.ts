@@ -55,6 +55,12 @@ export interface MerchantResponse {
   hasBusinessLicense?: boolean | null;
   metadata?: unknown;
   status?: string | null;
+  approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  approvedAt?: string | Date | null;
+  approvedBy?: number | null;
+  rejectedAt?: string | Date | null;
+  rejectedBy?: number | null;
+  rejectionReason?: string | null;
   ownerId?: number | null;
   brandId?: number | null;
   agencyId?: number | null;
@@ -114,6 +120,11 @@ export interface MerchantApiResponse {
   businessCategory: string | null;
   phone: string | null;
   approvalStatus: string;
+  approvedAt?: string | null;
+  approvedBy?: number | null;
+  rejectedAt?: string | null;
+  rejectedBy?: number | null;
+  rejectionReason?: string | null;
   operationalStatus: string;
   averageRating: number;
   totalReviews: number;

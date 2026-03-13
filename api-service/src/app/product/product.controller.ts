@@ -25,6 +25,7 @@ import { MerchantOwnershipPipe } from '../common/pipes/merchant-ownership.pipe';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { RESOURCE_TARGETS } from '../common/constants/resource.constant';
 import { PermissionsGuard } from '../common/guards/permissions.guard';
+import { AuthenticatedRequest } from '../common/interfaces/auth.interface';
 
 @Controller('products')
 export class ProductController {
@@ -36,7 +37,6 @@ export class ProductController {
   @Permissions('product:create')
   @UseInterceptors(FilesInterceptor('images', 10))
   async create(
-    @Query('merchantId') merchantId: string,
     @Body(MerchantOwnershipPipe) createProductDto: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>
   ) {
@@ -44,8 +44,30 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAll(
+    @Query() paginationDto: PaginationDto,
+    @Query('merchantId') merchantId?: string
+  ) {
+    return this.productService.findAll(paginationDto, merchantId);
+  }
+
+  // Public listing for B2C storefront (paginated, active products only)
+  @Get('public')
+  findPublic(@Query() paginationDto: PaginationDto) {
+    return this.productService.findPublic(paginationDto);
+  }
+
+  @Get('merchant/me')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('product:read')
+  findMyMerchantProducts(
+    @Request() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto
+  ) {
+    return this.productService.findAllByCurrentMerchant(
+      req.user.userId,
+      paginationDto
+    );
   }
 
   @Get('merchant/:merchantId')

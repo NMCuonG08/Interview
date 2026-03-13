@@ -1,0 +1,47 @@
+<section class="detail-page">
+  <a routerLink="/store" class="back-link">Back to Store</a>
+
+  <div *ngIf="isLoading()" class="detail-skeleton">
+    <div class="image"></div>
+    <div class="line lg"></div>
+    <div class="line md"></div>
+  </div>
+
+  <article *ngIf="!isLoading() && product()" class="detail-card">
+    <div class="visual-panel">
+      <div class="image"></div>
+      <div class="quick-points">
+        <span>Fast checkout</span>
+        <span>Cart saved locally</span>
+        <span>Single merchant order flow</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1>{{ displayName() }}</h1>
+      <p class="price">{{ priceText() }}</p>
+      <p class="description">
+        {{ resolveDescription(product()?.description) }}
+      </p>
+
+      <div class="qty">
+        <button type="button" (click)="decrement()">-</button>
+        <span>{{ quantity() }}</span>
+        <button type="button" (click)="increment()">+</button>
+      </div>
+
+      <div class="cta-row">
+        <button type="button" class="add-btn" (click)="addToCart()">
+          Add to Cart
+        </button>
+        <a routerLink="/cart" class="ghost-link">Go to Cart</a>
+      </div>
+
+      <p *ngIf="addedToCart()" class="added-note">
+        Added to cart successfully.
+      </p>
+    </div>
+  </article>
+
+  <p *ngIf="!isLoading() && !product()" class="empty">Product not found.</p>
+</section>
